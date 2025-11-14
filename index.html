@@ -90,12 +90,19 @@ En conclusion, les éléphants sont des créatures extraordinaires, dont l'intel
   text-align:center;
   color:#EFA64B;
   }
-  header{
-  margin: 1px 1px;
+  header {
   position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%); /* centre parfaitement */
+  width: 100%;                /* occupe toute la largeur */
+  max-width: 900px;           /* limite la taille si tu veux */
+  background-color: #0A2A43;  /* même couleur que le body */
+  padding: 10px 0;            /* espace intérieur */
   text-align: center;
-  }
- 
+  z-index: 1000;              /* passe au-dessus de tout */
+  border-bottom: 2px solid #EFA64B; /* option : jolie ligne */
+}
    
 
 
