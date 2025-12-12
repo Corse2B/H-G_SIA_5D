@@ -21,8 +21,8 @@ body{
   width: 120px;       /* ← boîte moins large */
   text-align:left;
   position: absolute; /* ← permet de placer à droite */
-  right: 100px;        /* ← aligne à droite du header */
-  top: 100px;          /* ← ajuste verticalement, tu peux modifier */
+  right: 500px;        /* ← aligne à droite du header */
+  top: 500px;          /* ← ajuste verticalement, tu peux modifier */
 }
 
 details summary::after {
