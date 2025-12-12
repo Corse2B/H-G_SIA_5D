@@ -14,13 +14,14 @@ body{
   background-color:#2A3F55;
   }
   details{
-  max-width: 100px;
-  border-radius: 10px; /* chatgtp */
+  width: 100px;
+  border-radius: 10px; 
   background-color:#2F4E69;
   padding:5px;
   margin:10px;
   position: sticky;
-  left:70%
+  margin-left: auto;
+  margin-right: 100px;
   }
   #content{
   position: static;
