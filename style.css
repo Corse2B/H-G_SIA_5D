@@ -12,7 +12,12 @@ body{
   }
   #Lang:hover{
   background-color:#2A3F55;
-  
+  }
+  details{
+  border-radius: 10px;
+  background-color:#2F4E69;
+  padding:5px;
+  margin:10px;
   }
   #content{
   position: static;
