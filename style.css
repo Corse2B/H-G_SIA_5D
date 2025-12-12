@@ -21,12 +21,17 @@ body{
   width: 120px;       /* ← boîte moins large */
   text-align:left;
   position: absolute; /* ← permet de placer à droite */
-  right: 10px;        /* ← aligne à droite du header */
-  top: 20px;          /* ← ajuste verticalement, tu peux modifier */
+  right: 100px;        /* ← aligne à droite du header */
+  top: 100px;          /* ← ajuste verticalement, tu peux modifier */
 }
 
-details summary {
-  cursor: pointer;
+details summary::after {
+  content: "›"; /* fermé */
+  float: right;
+}
+
+details[open] summary::after {
+  content: "⌄"; /* ouvert */
 }
   #content{
   position: static;
