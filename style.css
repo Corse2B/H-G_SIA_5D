@@ -15,14 +15,14 @@ body{
   }
   details{
   display: block;
-  width: 100px;
+  width: 70px;
   border-radius: 10px; 
   background-color:#2F4E69;
   padding:5px;
   margin:10px;
   position: sticky;
   margin-left: auto;
-  margin-right: 100px;
+  margin-right: 150px;
   }
   #content{
   position: static;
