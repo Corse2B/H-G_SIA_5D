@@ -12,6 +12,9 @@ body{
   margin-right: 10px;
   text-align:center;
   }
+  #menu1 {
+  text-align: center;
+  }
   .Lang:hover{
   background-color:#2A3F55;
   }
