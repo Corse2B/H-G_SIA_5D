@@ -55,6 +55,14 @@ body{
 #menu1[open] summary::after {
   content: " ▴";
 }
+#menu1 summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-weight: bold;
+  color: #EFA64B;
+}
 
 
   #content{
