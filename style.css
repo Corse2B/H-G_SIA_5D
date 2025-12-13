@@ -4,14 +4,14 @@ body{
   color:#EFA64B;
   text-align: center;
   }
-  #Lang{
+  .Lang{
   background-color:#2F4E69;
   padding:5px;
   border-radius: 15px;
   display: inline-block;
   margin-right: 10px;
   }
-  #Lang:hover{
+  .Lang:hover{
   background-color:#2A3F55;
   }
   details{
