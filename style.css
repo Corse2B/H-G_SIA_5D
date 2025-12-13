@@ -8,7 +8,8 @@ body{
   background-color:#2F4E69;
   padding:5px;
   border-radius: 15px;
-  margin:20px;
+  display: inline-block;
+  margin-right: 10px;
   }
   #Lang:hover{
   background-color:#2A3F55;
