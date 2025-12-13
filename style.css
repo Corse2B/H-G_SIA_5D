@@ -71,7 +71,7 @@ summary { list-style: none; }
 }
 
 
-  #content{
+  .content{
   position: static;
   margin:10px auto;
   text-align:left;
