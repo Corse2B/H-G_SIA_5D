@@ -10,6 +10,7 @@ body{
   border-radius: 15px;
   display: inline-block;
   margin-right: 10px;
+  text-align:center;
   }
   .Lang:hover{
   background-color:#2A3F55;
@@ -49,11 +50,11 @@ body{
   gap: 10px;
 }
 #menu1 summary::after {
-  content: " ▾";
+  content: "⌄";
 }
 
 #menu1[open] summary::after {
-  content: " ▴";
+  content: "›";
 }
 #menu1 summary {
   display: flex;
