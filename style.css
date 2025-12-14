@@ -199,12 +199,29 @@ header h2 {
   filter: blur(6px);
   transition: filter 0.3s ease;
 }
+#BTMessage : hover{
+background-color:#2A3F55;
+}
 #BTMessage{
-
+ position:sticky;
+ background-color:#2F4E69;
+  padding:5px;
+  border-radius: 15px;
+  margin-right: 10px;
 
 }
 #e-mail{
-  
+position:sticky;
+border-radius: 15px; 
+background-color:#2F4E69;
+padding:5px;
 }
-#Message
+#Message{
+position:sticky;
+border-radius: 15px; 
+background-color:#2F4E69;
+padding:5px;
+}
+form{
+position:sticky;
 }
