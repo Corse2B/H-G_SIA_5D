@@ -4,6 +4,13 @@ body{
   color:#EFA64B;
   text-align: center;
   }
+.top-controls {
+  display: flex;
+  justify-content: flex-end; /* à droite */
+  align-items: center;
+  gap: 15px;
+  margin-top: 10px;
+}
   .Lang{
   background-color:#2F4E69;
   padding:5px;
@@ -238,4 +245,5 @@ left: 70%;
   margin-right: 10px;
   margin-bottom: 0px;
   }
+
 
