@@ -103,8 +103,8 @@ summary { list-style: none; }
   width: 80%;
   max-height: 80%;
   overflow-y: auto;
-  background: white;
-  color: black;
+  background:#2F4E69;
+  color: #EFA64B;
   z-index: 4000;
   padding: 25px;
   border-radius: 20px;
