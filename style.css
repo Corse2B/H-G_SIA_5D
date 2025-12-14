@@ -224,7 +224,7 @@ border-color: #EFA64B;
   border-radius: 15px;
   margin: 10px;
   border-color: #EFA64B;
-font-color:#EFA64B;
+color:#EFA64B;
 }
 #e-mail{
 position:sticky;
@@ -237,7 +237,7 @@ border-color: #EFA64B;
   line-height: 1.5;
   padding: 12px;
   font-family: inherit;
-  font-color:#EFA64B;
+color:#EFA64B;
 }
 #Message{
 position:sticky;
@@ -252,7 +252,7 @@ margin-top: 10px;
   line-height: 1.5;
   padding: 12px;
   font-family: inherit;
-  font-color:#EFA64B;
+ color:#EFA64B;
 }
 form{
 position:sticky;
