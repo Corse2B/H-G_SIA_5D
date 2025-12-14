@@ -16,6 +16,7 @@ body{
 details {
   position: static;
   margin: 0;
+  left:50%;
 }
   .Lang{
   background-color:#2F4E69;
