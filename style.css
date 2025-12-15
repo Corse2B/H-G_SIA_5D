@@ -16,6 +16,9 @@ body{
 details {
   position: static;
   margin: 0;
+  font-size: 16px;      /* même taille que Lang */
+  font-weight: bold;
+}
 }
   .Lang{
   background-color:#2F4E69;
