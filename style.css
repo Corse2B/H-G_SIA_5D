@@ -19,7 +19,6 @@ details {
   font-size: 16px;      /* même taille que Lang */
   font-weight: bold;
 }
-}
   .Lang{
   background-color:#2F4E69;
   padding:5px;
@@ -262,6 +261,7 @@ form{
 position:sticky;
 }
 #LienForm{
+   display: inline-block;
   top: 0;
   width: 100px;
   height:auto;
@@ -273,16 +273,8 @@ position:sticky;
   margin-left: auto;
   margin-right: 10px;
   margin-bottom: 0px;
-  font-size: 30px;
   font-weight: bold;
-  }
-#LienForm {
-  display: inline-block;
-  width: 100px;
-  border-radius: 10px;
-  background-color: #2F4E69;
-  padding: 5px;
-  color: #EFA64B;
+  color: #EFA64B;  
 }
 #LienForm:hover {
   background-color: #2A3F55;
