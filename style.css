@@ -257,7 +257,8 @@ margin-top: 10px;
 }
 form{
 position:sticky;
-left: 70%;
+font-size: 15px;
+font-weight: bold;
 }
 #LienForm{
   top: 0;
