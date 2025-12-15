@@ -261,6 +261,7 @@ position:sticky;
 #LienForm{
   top: 0;
   width: 100px;
+  height:auto;
   border-radius: 10px; 
   background-color:#2F4E69;
   padding:5px;
@@ -279,7 +280,6 @@ position:sticky;
   background-color: #2F4E69;
   padding: 5px;
   color: #EFA64B;
-  text-decoration: none;
 }
 #LienForm:hover {
   background-color: #2A3F55;
