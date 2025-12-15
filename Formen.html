@@ -39,24 +39,39 @@ If you have a question, you can also write it below (this message will be sent d
 <div id="page">
 
 
-<form action="https://formspree.io/f/xnnerjky" method="POST">
-  
+<form action="https://formsubmit.co/tsilvain@lfitokyo.org" method="POST">
 
+  <!-- 🔐 Anti-spam security -->
+  <input type="hidden" name="_captcha" value="true">
+  <input type="text" name="_honey" style="display:none">
+
+  <!-- ⚙️ FormSubmit options -->
+  <input type="hidden" name="_subject" value="New message from the website">
+  <input type="hidden" name="_template" value="table">
+  <input type="hidden" name="_next" value="thank-you.html">
+  <input type="hidden" name="_autoresponse" value="Thank you for your message. We will get back to you as soon as possible.">
+
+  <!-- 📝 Message -->
   <textarea 
     name="message" 
-    placeholder="A question ?,A request ?" 
+    placeholder="A question? A request?"
     required
+    maxlength="500"
     id="Message"
   ></textarea>
   <br>
+
+  <!-- 📧 Email (optional) -->
   <input 
     type="email" 
     name="email" 
-    placeholder="Your e-mail (optionnal)" 
+    placeholder="Your e-mail (optional)" 
     id="e-mail"
+    autocomplete="off"
   >
   <br>
 
+  <!-- 🚀 Submit button -->
   <button id="BTMessage" type="submit">Send</button>
 
 </form>
