@@ -248,7 +248,6 @@ position:sticky;
 border-radius: 15px; 
 background-color:#2F4E69;
 padding:5px;
-height:auto;
 border-color: #EFA64B;
 margin-top: 10px;
  font-size: 20px;
@@ -257,6 +256,7 @@ margin-top: 10px;
   font-family: inherit;
  color:#EFA64B;
   width:750px;
+  height:500px;
 }
 form{
 position:sticky;
