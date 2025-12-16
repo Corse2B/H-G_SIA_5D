@@ -24,10 +24,10 @@ height:auto;
 border-radius: 15px;
 margin: 10px;
 background-color:#2F4E69;
-z-index:2000;
 }
 .photo {
-  transition: transform 0.3s ease;
+transition: transform 0.3s ease;
+z-index:2000;
 }
 
 .photo.active {
