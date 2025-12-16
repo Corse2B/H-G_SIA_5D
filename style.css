@@ -17,6 +17,13 @@ details {
   position: static;
   margin: 0;
 }
+.photo{
+widht:100px;
+height:auto;
+border-radius: 15px;
+margin: 10px;
+background-color:#2F4E69;
+}
   .Lang{
   background-color:#2F4E69;
   padding:5px;
