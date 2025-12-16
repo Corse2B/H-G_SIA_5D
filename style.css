@@ -18,7 +18,7 @@ details {
   margin: 0;
 }
 .photo{
-width:100px;
+width:600px;
 height:auto;
 border-radius: 15px;
 margin: 10px;
@@ -29,7 +29,7 @@ background-color:#2F4E69;
 }
 
 .photo.active {
-  transform: scale(1.6);
+  transform: scale(3.0);
 }
 
   .Lang{
