@@ -24,6 +24,14 @@ border-radius: 15px;
 margin: 10px;
 background-color:#2F4E69;
 }
+.photo {
+  transition: transform 0.3s ease;
+}
+
+.photo.active {
+  transform: scale(1.6);
+}
+
   .Lang{
   background-color:#2F4E69;
   padding:5px;
