@@ -29,7 +29,7 @@ background-color:#2F4E69;
 }
 
 .photo.active {
-  transform: scale(3.0);
+  transform: scale(2.2);
 }
 
   .Lang{
@@ -302,5 +302,11 @@ position:sticky;
 }
 .LienForm:hover {
   background-color: #2A3F55;
+}
+.gallery {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
