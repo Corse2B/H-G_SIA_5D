@@ -282,6 +282,7 @@ position:sticky;
 @keyframes fond {
   0%   { background: #2F4E69; }
   50%  { background: #05f519; }
+  50%  { color:#f505e1;} 
   100% { background: #2F4E69; }
 }
 #LienForm:hover {
