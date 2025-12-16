@@ -5,7 +5,7 @@ body{
   text-align: center;
   }
 header{
-z-index:10;
+z-index:100;
 }
 .top-controls {
   display: flex;
@@ -27,7 +27,7 @@ height:auto;
 border-radius: 15px;
 margin: 10px;
 background-color:#2F4E69;
-z-index:-1;
+z-index:10;
 transition: transform 0.3s ease;
 
 }
@@ -73,10 +73,6 @@ transition: transform 0.3s ease;
 #menu1 summary {
   list-style: none;
   cursor: pointer;
-}
-
-summary { list-style: none; }
-  display: none;
 }
 
 /* cache les langues par défaut */
@@ -333,5 +329,8 @@ position:sticky;
   flex-direction: column;
   align-items: center;
   gap: 10px;
+}
+summary { list-style: none; }
+  display: none;
 }
 
