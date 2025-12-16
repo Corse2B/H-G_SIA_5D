@@ -276,6 +276,13 @@ position:sticky;
   color: #EFA64B;
   text-decoration: none;
   font-size: 20px;      /* même taille que Lang */
+  animation: fond 1s infinite;
+}
+
+@keyframes fond {
+  0%   { background: #2F4E69; }
+  50%  { background: #05f519; }
+  100% { background: #2F4E69; }
 }
 #LienForm:hover {
   background-color: #2A3F55;
