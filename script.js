@@ -1,34 +1,51 @@
-const contents = document.querySelectorAll(".content");
-const overlay = document.getElementById("overlay");
-const page = document.getElementById("page");
+document.addEventListener("DOMContentLoaded", () => {
 
-function openContent(content) {
-  content.classList.add("active");
-  overlay.style.display = "block";
-  document.body.classList.add("no-scroll");
-  page.classList.add("blur");
-}
+  const contents = document.querySelectorAll(".content");
+  const overlay = document.getElementById("overlay");
+  const page = document.getElementById("page");
 
-function closeAll() {
-  document.querySelectorAll(".content.active").forEach(active => {
-    active.classList.remove("active");
+  function openContent(content) {
+    content.classList.add("active");
+    overlay.style.display = "block";
+    document.body.classList.add("no-scroll");
+    page.classList.add("blur");
+  }
+
+  function closeAllContent() {
+    contents.forEach(c => c.classList.remove("active"));
+    overlay.style.display = "none";
+    document.body.classList.remove("no-scroll");
+    page.classList.remove("blur");
+  }
+
+  contents.forEach(content => {
+    const closeBtn = content.querySelector(".close-btn");
+
+    content.addEventListener("click", (e) => {
+      e.stopPropagation();
+
+      if (content.classList.contains("active")) {
+        closeAllContent();
+      } else {
+        closeAllContent();
+        openContent(content);
+      }
+    });
+
+    if (closeBtn) {
+      closeBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        closeAllContent();
+      });
+    }
   });
-  overlay.style.display = "none";
-  document.body.classList.remove("no-scroll");
-  page.classList.remove("blur");
-}
 
-contents.forEach(content => {
-  const closeBtn = content.querySelector(".close-btn");
+  overlay.addEventListener("click", closeAllContent);
 
-  content.addEventListener("click", () => {
-    openContent(content);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeAllContent();
+    }
   });
 
-  closeBtn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    closeAll();
-  });
 });
-
-overlay.addEventListener("click", closeAll);
