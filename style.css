@@ -337,21 +337,22 @@ summary {
 }
 @media (max-width: 768px) {
 
+  /* --- Logos desktop cachés --- */
   #Logo1,
   #Logo2 {
     display: none;
   }
 
+  /* --- Base mobile --- */
   body {
     font-size: 15px;
     padding: 0 10px;
   }
-  #page-content.blur {
-  filter: blur(6px);
-  transition: filter 0.3s ease;
-  }
+
+  /* --- Page & fond logo --- */
   #page {
     position: relative;
+    z-index: 1;
   }
 
   #page::before {
@@ -362,27 +363,27 @@ summary {
     background-repeat: no-repeat;
     background-position: center 120px;
     background-size: 180px auto;
-    opacity: 0.08;
+    opacity: 0.08;        /* doux */
     pointer-events: none;
-    z-index: 1500;
+    z-index: -1;         /* 🔑 toujours derrière */
   }
 
-  #page > * {
-    position: relative;
-    z-index: 1;
-  }
-
+  /* --- Header --- */
   header {
+    position: static;
     padding: 20px 10px;
-    position:static;
+    text-align: center;
   }
 
+  /* --- Top controls --- */
   .top-controls {
+    display: flex;
     flex-direction: column;
     align-items: center;
     gap: 12px;
   }
 
+  /* --- Contenus --- */
   .content,
   #e-mail,
   #Message {
@@ -391,15 +392,22 @@ summary {
     box-sizing: border-box;
     font-size: 16px;
   }
-  .content.active{
-  width:100%;
+
+  .content.active {
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    z-index: 4000;
   }
 
+  /* --- Galerie photos --- */
   .photo {
     width: 100%;
+    height: auto;
     margin: 10px 0;
   }
 
+  /* --- Formulaire & liens --- */
   form,
   #e-mail,
   #Message,
@@ -417,14 +425,15 @@ summary {
     animation: none;
   }
 
+  /* --- Menu langue --- */
   #menu1 {
     margin: 0 auto;
   }
 
+  /* --- Footer --- */
   footer {
     font-size: 12px;
     padding: 15px;
   }
 
 }
-
