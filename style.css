@@ -346,7 +346,10 @@ summary {
     font-size: 15px;
     padding: 0 10px;
   }
-
+  #page-content.blur {
+  filter: blur(6px);
+  transition: filter 0.3s ease;
+  }
   #page {
     position: relative;
   }
@@ -359,9 +362,9 @@ summary {
     background-repeat: no-repeat;
     background-position: center 120px;
     background-size: 180px auto;
-    opacity: 0.06;
+    opacity: 0.08;
     pointer-events: none;
-    z-index: 0;
+    z-index: 1500;
   }
 
   #page > * {
