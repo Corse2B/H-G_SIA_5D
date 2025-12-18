@@ -41,7 +41,7 @@ transition: transform 0.3s ease;
 }
 
 
-  .Lang{
+  .lang{
   background-color:#2F4E69;
   padding:5px;
   border-radius: 15px;
@@ -52,9 +52,6 @@ transition: transform 0.3s ease;
   #menu1 {
   text-align: center;
   margin-right:250px;
-  }
-  .Lang:hover{
-  background-color:#2A3F55;
   }
   details{
   display: block;
@@ -322,7 +319,7 @@ position:sticky;
   100% { background: #2F4E69; }
 }
 .LienPage:hover,
-#menu1:hover {
+#menu1:hover summary {
   color: #2F4E69;
   background-color:#EFA64B;
 }
