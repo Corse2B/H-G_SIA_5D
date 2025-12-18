@@ -228,10 +228,11 @@ header h2 {
 .no-scroll {
   overflow: hidden;
 }
-/* effet blur */
-#page.blur {
+#page-content.blur {
   filter: blur(6px);
   transition: filter 0.3s ease;
+}
+
 }
 #BTMessage:hover{
 background-color:#2A3F55;
