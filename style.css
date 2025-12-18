@@ -86,7 +86,8 @@ transition: transform 0.3s ease;
    justify-content: center; /* centre horizontalement */
   align-items: center;
 }
-#menu1 summary::before {
+#menu1 summ
+ary::before {
   content: "◆";
 }
 
@@ -120,7 +121,7 @@ transition: transform 0.3s ease;
   margin:10px auto;
   text-align:left;
   width:750px;
-  background-color:#2F4E69;
+  background-color:#2A3F55;
   color:#EFA64B;
   border-radius: 15px;
   padding: 10px;
@@ -170,7 +171,7 @@ transition: transform 0.3s ease;
   color: #0A2A43;
 }
   #MP {
-  background-color: #2F4E69;
+  background-color: #2A3F55;
   border-radius: 15px;
   padding: 10px;
   max-width: 450px;
@@ -199,7 +200,7 @@ header h2 {
   margin: 0;          /* pas de marge supplémentaire */
 }
  #MP:hover,.content:hover{
- background-color:#2A3F55;
+ background-color:#2F4E69;
  }
 .close-btn {
   position: absolute;
