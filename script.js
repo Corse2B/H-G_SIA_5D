@@ -21,17 +21,15 @@ document.addEventListener("DOMContentLoaded", () => {
   contents.forEach(content => {
     const closeBtn = content.querySelector(".close-btn");
 
+    // 👉 OUVERTURE seulement si PAS actif
     content.addEventListener("click", (e) => {
+      if (content.classList.contains("active")) return;
       e.stopPropagation();
-
-      if (content.classList.contains("active")) {
-        closeAllContent();
-      } else {
-        closeAllContent();
-        openContent(content);
-      }
+      closeAllContent();
+      openContent(content);
     });
 
+    // bouton X
     if (closeBtn) {
       closeBtn.addEventListener("click", (e) => {
         e.stopPropagation();
@@ -40,8 +38,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
+  // clic fond sombre
   overlay.addEventListener("click", closeAllContent);
 
+  // touche ESC
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       closeAllContent();
