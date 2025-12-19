@@ -47,6 +47,7 @@ Si vous avez une question, vous pouvez aussi l’écrire ci-dessous (ce message 
 
   <!-- 🔐 Sécurité anti-spam -->
   <input type="text" name="_honey" style="display:none">
+  <input type="hidden" name="_captcha" value="true">
 
   <!-- ⚙️ Options FormSubmit -->
   <input type="hidden" name="_subject" value="Nouveau message depuis le site">
@@ -83,17 +84,6 @@ Si vous avez une question, vous pouvez aussi l’écrire ci-dessous (ce message 
     autocomplete="off"
   >
   <br>
- <div id="captcha-zone" style="display:none">
-  <p id="captcha-question"></p>
-
-  <input
-    type="text"
-    id="captcha-answer"
-    placeholder="Answer"
-    autocomplete="off"
-  >
-</div>
-<br>
 
   <!-- 🚀 Bouton -->
   <button id="BTMessage" type="submit">Envoyer</button>
