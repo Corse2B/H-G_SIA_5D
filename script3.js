@@ -3,98 +3,84 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector("form");
   if (!form) return;
 
-  const DELAI_ENVOI = 60; // délai en secondes entre deux envois
-  const CLE_STORAGE = "dernierEnvoiFormulaire";
+  const DELAI_ENVOI = 60 * 1000; // 60 secondes
 
   form.addEventListener("submit", function (e) {
 
-    /* ⏱️ LIMITE D'ENVOI (ANTI-SPAM) */
+    /* ⏱️ LIMITE D'ENVOI */
+    const dernierEnvoi = localStorage.getItem("dernierEnvoiMessage");
     const maintenant = Date.now();
-    const dernierEnvoi = localStorage.getItem(CLE_STORAGE);
 
-    if (dernierEnvoi) {
-      const diff = Math.floor((maintenant - dernierEnvoi) / 1000);
-
-      if (diff < DELAI_ENVOI) {
-        e.preventDefault();
-        alert(
-          "Veuillez patienter avant d'envoyer un nouveau message.\n\n" +
-          "Temps restant : " + (DELAI_ENVOI - diff) + " secondes\n\n" +
-          "-----------------------------------------------------\n" +
-          "Please wait before sending another message.\n\n" +
-          "Remaining time: " + (DELAI_ENVOI - diff) + " seconds"
-        );
-        return;
-      }
+    if (dernierEnvoi && maintenant - dernierEnvoi < DELAI_ENVOI) {
+      e.preventDefault();
+      alert(
+        "Please wait before sending another message.\n\n" +
+        "Merci d’attendre avant d’envoyer un nouveau message."
+      );
+      return;
     }
 
     const champMessage = document.getElementById("Message");
     if (!champMessage) return;
 
-    const message = champMessage.value;
+    const message = champMessage.value.trim();
+    if (message.length === 0) return;
 
-    /* 🔐 NETTOYAGE ANTI-CONTURNEMENT */
+    /* 🧼 VERSION NETTOYÉE */
     const messagePropre = message
       .toLowerCase()
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
       .replace(/[^a-z0-9 ]/g, "");
 
-    /* 🚫 BLOQUER LES CRIS (MAJUSCULES) */
+    /* 🔍 DÉTECTION MESSAGE DOUTEUX */
+    let douteux = false;
+
+    // Trop long
+    if (message.length > 300) douteux = true;
+
+    // Trop de caractères spéciaux
+    const speciaux = message.replace(/[a-zA-Z0-9\s]/g, "").length;
+    if (speciaux > 15) douteux = true;
+
+    // Trop de MAJUSCULES
     const lettres = message.replace(/[^a-zA-Z]/g, "");
     if (lettres.length >= 15) {
-      const majuscules = lettres.replace(/[^A-Z]/g, "").length;
-      const ratioMaj = majuscules / lettres.length;
-
-      if (ratioMaj > 0.7) {
-        e.preventDefault();
-        alert(
-          "Comme il arrive que certains utilisateurs utilisent des majuscules pour annuler les filtres anti-vulgarité,\n" +
-          "merci d'écrire vos messages en minuscules.\n\nMerci\n" +
-          "-----------------------------------------------------\n" +
-          "As some users may use capital letters to bypass profanity filters,\n" +
-          "please write your messages in lowercase.\n\nThank you"
-        );
-        return;
-      }
+      const maj = lettres.replace(/[^A-Z]/g, "").length;
+      if (maj / lettres.length > 0.7) douteux = true;
     }
 
-    /* 🚫 LISTE DES MOTS INTERDITS */
+    /* 🚦 SI PAS DOUTEUX → ON LAISSE PASSER */
+    if (!douteux) {
+      localStorage.setItem("dernierEnvoiMessage", maintenant);
+      return;
+    }
+
+    /* 🚫 MOTS INTERDITS (test seulement si douteux) */
     const motsInterdits = [
-      "idiot","idiote","imbecile","stupide","debile","cretin","nul","nulle",
-      "con","connard","connasse","conne","encule","enfoire","salaud","salope",
-      "batard","ordure","merde","merdique","bouffon","abruti","attarde","loser",
-      "ta gueule","ferme ta gueule","va crever","creve","mort",
-      "je vais te","tu vas mourir","je te tue","je vais te tuer",
-      "pute","putain","petasse","salopard",
-      "enculer","baiser","baise","bite","couille","couilles",
-      "chatte","seins","nichons","cul","fesse","porn","porno","pornographie",
+      "idiot","idiote","imbecile","stupide","debile","cretin",
+      "con","connard","connasse","encule","enfoire","salaud","salope",
+      "merde","putain","pute","bite","couille","cul",
       "fuck","fucking","shit","asshole","bitch","bastard","dick",
-      "pussy","motherfucker","retard","slut","whore",
-      "degage","casse toi","tes nul","tes con","tu sers a rien",
-      "personne taime","suicide","suicide toi",
-      "c0n","fck","sh1t","salope","connard","idiot","moron","stupid","dumb",
-      "shut up","go die","kill yourself","nobody likes you",
-      "sex","sexual","nude","xxx","boobs","ass",
-      "hate you","die","death"
+      "pussy","motherfucker","slut","whore",
+      "suicide","kill yourself","go die",
+      "sex","porno","porn","xxx"
     ];
 
     for (let mot of motsInterdits) {
       if (messagePropre.includes(mot)) {
         e.preventDefault();
         alert(
-          "Nos filtres ont détecté des insultes.\n" +
-          "Merci de modérer votre langage.\n\nMerci\n" +
-          "-----------------------------------------------------\n" +
           "Our filters have detected offensive language.\n" +
-          "Please moderate your language.\n\nThank you"
+          "Please moderate your language.\n\n" +
+          "Merci de modérer votre langage."
         );
         return;
       }
     }
 
-    /* ✅ ENREGISTRER L'ENVOI SI TOUT EST OK */
-    localStorage.setItem(CLE_STORAGE, maintenant);
+    /* ✅ TOUT EST OK → ON ENREGISTRE L’ENVOI */
+    localStorage.setItem("dernierEnvoiMessage", maintenant);
 
   });
 
