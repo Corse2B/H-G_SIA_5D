@@ -3,14 +3,37 @@ document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector("form");
   if (!form) return;
 
+  const DELAI_ENVOI = 60; // délai en secondes entre deux envois
+  const CLE_STORAGE = "dernierEnvoiFormulaire";
+
   form.addEventListener("submit", function (e) {
+
+    /* ⏱️ LIMITE D'ENVOI (ANTI-SPAM) */
+    const maintenant = Date.now();
+    const dernierEnvoi = localStorage.getItem(CLE_STORAGE);
+
+    if (dernierEnvoi) {
+      const diff = Math.floor((maintenant - dernierEnvoi) / 1000);
+
+      if (diff < DELAI_ENVOI) {
+        e.preventDefault();
+        alert(
+          "Veuillez patienter avant d'envoyer un nouveau message.\n\n" +
+          "Temps restant : " + (DELAI_ENVOI - diff) + " secondes\n\n" +
+          "-----------------------------------------------------\n" +
+          "Please wait before sending another message.\n\n" +
+          "Remaining time: " + (DELAI_ENVOI - diff) + " seconds"
+        );
+        return;
+      }
+    }
 
     const champMessage = document.getElementById("Message");
     if (!champMessage) return;
 
     const message = champMessage.value;
 
-    /* 🔐 NETTOYAGE ANTI-CONTournement */
+    /* 🔐 NETTOYAGE ANTI-CONTURNEMENT */
     const messagePropre = message
       .toLowerCase()
       .normalize("NFD")
@@ -25,7 +48,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (ratioMaj > 0.7) {
         e.preventDefault();
-        alert("Comme il arrive que certains utilisateurs utilise des majuscules pour annuler les filtres anti-vulgarité merci d'écrire vos messages en minuscules\n\nMerci\n-----------------------------------------------------\nAs some users may use capital letters to bypass profanity filters, please write your messages in lowercase.\n\nThank you");
+        alert(
+          "Comme il arrive que certains utilisateurs utilisent des majuscules pour annuler les filtres anti-vulgarité,\n" +
+          "merci d'écrire vos messages en minuscules.\n\nMerci\n" +
+          "-----------------------------------------------------\n" +
+          "As some users may use capital letters to bypass profanity filters,\n" +
+          "please write your messages in lowercase.\n\nThank you"
+        );
         return;
       }
     }
@@ -44,22 +73,28 @@ document.addEventListener("DOMContentLoaded", () => {
       "pussy","motherfucker","retard","slut","whore",
       "degage","casse toi","tes nul","tes con","tu sers a rien",
       "personne taime","suicide","suicide toi",
-      "c0n","fck","sh1t","pute","salope","connard","idiot","idiotic","moron","stupid","dumb","fool","jerk","trash","pathetic","worthless","scum","creep","clown","loser","weirdo",
-"shut up","go die","drop dead","kill yourself","nobody likes you","you are useless","you are nothing",
-"sex","sexual","nude","nudes","boobs","tits","ass","booty","anal","orgasm","fetish","xxx",
-"hate you","i hate you","die","death","burn","destroy",
-"fuck","fucking","f u c k","f.u.c.k","f-ck","sh!t","shit","bi7ch","bitch","a$$hole","asshole","dick","pussy","motherfucker","slut","whore",
-"retard","retardation"
-
+      "c0n","fck","sh1t","salope","connard","idiot","moron","stupid","dumb",
+      "shut up","go die","kill yourself","nobody likes you",
+      "sex","sexual","nude","xxx","boobs","ass",
+      "hate you","die","death"
     ];
 
     for (let mot of motsInterdits) {
       if (messagePropre.includes(mot)) {
         e.preventDefault();
-        alert("Nos filtres on détecté des insultes.Merci de modéré votre language\n\nMerci\n-----------------------------------------------------\nOur filters have detected offensive language. Please moderate your language.\n\nThank you");
+        alert(
+          "Nos filtres ont détecté des insultes.\n" +
+          "Merci de modérer votre langage.\n\nMerci\n" +
+          "-----------------------------------------------------\n" +
+          "Our filters have detected offensive language.\n" +
+          "Please moderate your language.\n\nThank you"
+        );
         return;
       }
     }
+
+    /* ✅ ENREGISTRER L'ENVOI SI TOUT EST OK */
+    localStorage.setItem(CLE_STORAGE, maintenant);
 
   });
 
