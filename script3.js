@@ -1,4 +1,5 @@
-
+document.addEventListener("DOMContentLoaded", () => {
+  
 document.querySelector("form").addEventListener("submit", function (e) {
   const champMessage = document.getElementById("Message");
   const message = champMessage.value;
