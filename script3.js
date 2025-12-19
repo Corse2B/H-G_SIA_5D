@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (ratioMaj > 0.7) {
         e.preventDefault();
-        alert("Comme il arrive que certains utilisateurs utilise des majuscules pour annuler les filtres anti-vulgarité merci d' écrire vos messages en minuscules\n Merci\nAs some users may use capital letters to bypass profanity filters, please write your messages in lowercase.\nThank you");
+        alert("Comme il arrive que certains utilisateurs utilise des majuscules pour annuler les filtres anti-vulgarité merci d'écrire vos messages en minuscules\n\nMerci\n-----------------\nAs some users may use capital letters to bypass profanity filters, please write your messages in lowercase.\n\nThank you");
         return;
       }
     }
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
     for (let mot of motsInterdits) {
       if (messagePropre.includes(mot)) {
         e.preventDefault();
-        alert("Nos filtres on détecté des insultes.Merci de modéré votre language\nMerci\n our filters have detected offensive language. Please moderate your language.\nThank you");
+        alert("Nos filtres on détecté des insultes.Merci de modéré votre language\n\nMerci\n-----------------\n our filters have detected offensive language. Please moderate your language.\n\nThank you");
         return;
       }
     }
