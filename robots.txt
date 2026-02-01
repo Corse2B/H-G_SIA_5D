@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://corse2b.github.io/H-G_SIA_5D/sitemap.xml
+Sitemap: https://chronographia5dsia.pages.dev/sitemap.xml
+
