@@ -313,6 +313,9 @@ position:sticky;
   text-decoration: none;
   font-size: 20px;      /* même taille que Lang */
 }
+a{
+color: #EFA64B;
+}
 
 @keyframes fond {
   0%   { background: #2F4E69; }
