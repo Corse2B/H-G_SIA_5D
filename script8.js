@@ -25,10 +25,15 @@ async function verifier() {
   } else {
     document.getElementById("erreur").textContent = "Mot incorrect";
   }
-}
+} // ✅ ICI l’accolade manquante
 
 function afficherSite() {
   document.getElementById("login").style.display = "none";
   document.getElementById("site").style.display = "block";
 }
+
+// Cache le flash au chargement (anti-FOUC)
+document.addEventListener("DOMContentLoaded", () => {
+  document.documentElement.style.visibility = "visible";
+});
 
