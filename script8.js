@@ -7,7 +7,7 @@ const SALT = "chronographia5dsia3245684902";
 
 
 const bonHash =
-  "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9";
+  "9204212b4d4ea6a0f8e5f62aab64b3f096f131dc0d0c090af8ead696e0f82f31";
 
 // =======================
 // AUTO-LOGIN
