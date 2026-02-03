@@ -1,21 +1,33 @@
-// SALT (fixe)
+// =======================
+// CONFIGURATION
+// =======================
+
+// SALT (différent du mot de passe)
 const SALT = "chronographia5dsia3245684902";
 
-// Hash SHA-256 de (mot + SALT)
-const bonHash =
-  "f20832f7adea64c6f6c6f9dd4c144810312436421c528cc1b85daebceb373834";
 
-// Déjà connecté ?
+const bonHash =
+  "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9";
+
+// =======================
+// AUTO-LOGIN
+// =======================
 if (localStorage.getItem("ok") === "true") {
   afficherSite();
 }
 
+// =======================
+// VÉRIFICATION
+// =======================
 async function verifier() {
   const input = document.getElementById("mdp").value;
 
+  // ⚠️ IMPORTANT : séparateur ESPACE
+  const data = `${input} ${SALT}`;
+
   const hashBuffer = await crypto.subtle.digest(
     "SHA-256",
-    new TextEncoder().encode(input + SALT)
+    new TextEncoder().encode(data)
   );
 
   const hashHex = [...new Uint8Array(hashBuffer)]
@@ -30,13 +42,17 @@ async function verifier() {
   }
 }
 
+// =======================
+// AFFICHAGE
+// =======================
 function afficherSite() {
   document.getElementById("login").style.display = "none";
   document.getElementById("site").style.display = "block";
 }
 
-// Anti-flash
+// =======================
+// ANTI-FLASH
+// =======================
 document.addEventListener("DOMContentLoaded", () => {
   document.documentElement.style.visibility = "visible";
 });
-
