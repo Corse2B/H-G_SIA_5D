@@ -6,6 +6,8 @@
 <title>Chronographia5DSIA</title>
 <link rel="icon" type="image/png" sizes="32x32" href="Logo1.png">
 <link rel="stylesheet" href="style.css">
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#cfa24a">
 <meta name="keywords" content="histoire géographie, Moyen Âge, Méditerranée, Islam, échanges commerciaux, croisades, LFI Tokyo, 5e SIA,Blog,collège">
 <link rel="alternate" hreflang="fr" href="https://chronographia5dsia.pages.dev">
 <link rel="alternate" hreflang="en" href="https://chronographia5dsia.pages.dev/en">
@@ -212,6 +214,12 @@ C’est un lieu où se rencontrent, s’opposent et s’influencent trois grande
 <script src="script.js"></script>
 <script src="script6.js"></script>
 <div class="overlay" id="overlay"></div>
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/sw.js");
+}
+</script>
+
  </body>
   
   
