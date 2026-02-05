@@ -97,7 +97,8 @@ If you have a question, you can also write it below (this message will be sent d
 <div id="page">
 
 
-<form action="https://formsubmit.co/bb0ce64b410d925dff0b443805b4f367" method="POST">
+<form action="/api/contact" method="POST">
+ 
 
   <!-- 🔐 Anti-spam security -->
   <input type="hidden" name="_captcha" value="true">
@@ -136,7 +137,9 @@ If you have a question, you can also write it below (this message will be sent d
   >
   <br>
 
-  <!-- 🚀 Submit button -->
+  <div class="cf-turnstile"
+     data-sitekey="0x4AAAAAACX1woCAgGXxWdB4">
+</div>
   <button id="BTMessage" type="submit">Send</button>
 
 </form>
