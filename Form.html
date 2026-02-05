@@ -11,6 +11,8 @@
 <link rel="alternate" hreflang="en" href="https://chronographia5dsia.pages.dev/Formen">
 <meta name="description" content="Blog d’Histoire-Géographie des élèves de 5D SIA du Lycée Français International de Tokyo.">
 <script src="script4.js" defer></script>
+ <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
 
  <link rel="icon" type="image/png" sizes="32x32" href="Logo1.png">
 <link rel="icon" type="image/png" sizes="192x192" href="Logo1.png">
@@ -102,7 +104,9 @@ Si vous avez une question, vous pouvez aussi l’écrire ci-dessous (ce message 
 <div id="page">
 
 
-<form action="https://formsubmit.co/bb0ce64b410d925dff0b443805b4f367" method="POST">
+<form action="/api/contact" method="POST">
+ 
+
 
   <!-- 🔐 Sécurité anti-spam -->
   <input type="text" name="_honey" style="display:none">
@@ -144,7 +148,9 @@ Si vous avez une question, vous pouvez aussi l’écrire ci-dessous (ce message 
   >
   <br>
 
-  <!-- 🚀 Bouton -->
+<div class="cf-turnstile"
+     data-sitekey="0x4AAAAAACX1woCAgGXxWdB4">
+</div>
   <button id="BTMessage" type="submit">Envoyer</button>
 
 </form>
