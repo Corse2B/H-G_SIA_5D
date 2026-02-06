@@ -36,7 +36,11 @@ export const onRequestPost = async ({ request, env }) => {
       );
     }
 
-    return Response.redirect("/merci", 302);
+return Response.redirect(
+  "https://chronographia5dsia.pages.dev/merci",
+  302
+);
+
   } catch (e) {
     return new Response(
       "Exception: " + e.message,
