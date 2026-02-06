@@ -26,8 +26,5 @@ export const onRequestPost = async ({ request, env }) => {
     return new Response("Échecs Turnstile", { status: 403 });
   }
 
-  return Response.redirect(
-    "https://chronographia5dsia.pages.dev/merci",
-    302
-  );
+  return Response.redirect(/merci",302 );
 };
