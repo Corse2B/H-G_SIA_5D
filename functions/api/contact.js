@@ -23,7 +23,7 @@ export const onRequestPost = async ({ request, env }) => {
   const result = await verify.json();
 
   if (!result.success) {
-    return new Response("Échec Turnstile", { status: 403 });
+    return new Response("Échecs Turnstile", { status: 403 });
   }
 
   return Response.redirect(
