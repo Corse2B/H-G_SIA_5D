@@ -1,23 +1,45 @@
 export const onRequestPost = async ({ request, env }) => {
   try {
-    // 1. Vérif du secret
-    if (!env.TURNSTILE_SECRET) {
-      return new Response("SECRET ABSENT", { status: 500 });
+    const formData = await request.formData();
+    const token = formData.get("cf-turnstile-response");
+
+    if (!token) {
+      return new Response("Token Turnstile manquant", { status: 400 });
     }
 
-    // 2. Lecture du formulaire
-    const formData = await request.formData();
+    const ip =
+      request.headers.get("CF-Connecting-IP") ||
+      request.headers.get("x-forwarded-for") ||
+      "";
 
-    // 3. Voir TOUT ce qui arrive
-    const keys = [...formData.keys()].join(", ");
-
-    return new Response(
-      "SECRET OK | CHAMPS: " + keys,
-      { status: 200 }
+    const verify = await fetch(
+      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          secret: env.TURNSTILE_SECRET,
+          response: token,
+          remoteip: ip,
+        }),
+      }
     );
+
+    const result = await verify.json();
+
+    if (!result.success) {
+      return new Response(
+        "Turnstile refusé: " + JSON.stringify(result),
+        { status: 403 }
+      );
+    }
+
+    return Response.redirect("/merci", 302);
   } catch (e) {
     return new Response(
-      "EXCEPTION: " + e.message,
+      "Exception: " + e.message,
       { status: 500 }
     );
   }
