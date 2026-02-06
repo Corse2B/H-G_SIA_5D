@@ -52,7 +52,7 @@ export const onRequestPost = async ({ request, env }) => {
           }
         ],
         from: {
-          email: "no-reply@chronographia5dsia.pages",
+          email: "no-reply@chronographia5dsia.pages.dev",
           name: "Chronographia 5DSIA"
         },
         subject: "Formulaire Chronographia",
