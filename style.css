@@ -54,6 +54,9 @@ transition: transform 0.3s ease;
   text-align: center;
   margin-right:250px;
   }
+  .BigMessage {
+  font-size:70px;
+  }
   details{
   display: block;
   top: 0;
