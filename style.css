@@ -155,7 +155,7 @@ transition: transform 0.3s ease;
   #Logo2{
   position: fixed;
   right:10px;
-  top:1px;
+  top:8px;
   width: 160px;
   height: auto;
   z-index:2000;
