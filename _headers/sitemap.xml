@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Page principale -->
+  <url>
+    <loc>https://chronographia5dsia.pages.dev/</loc>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Version anglaise -->
+  <url>
+    <loc>https://chronographia5dsia.pages.dev/en.html</loc>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Formulaire FR -->
+  <url>
+    <loc>https://chronographia5dsia.pages.dev/form.html</loc>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Formulaire EN -->
+  <url>
+    <loc>https://chronographia5dsia.pages.dev/formen.html</loc>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Galerie FR -->
+  <url>
+    <loc>https://chronographia5dsia.pages.dev/gallerie.html</loc>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Galerie EN -->
+  <url>
+    <loc>https://chronographia5dsia.pages.dev/gallerien.html</loc>
+    <priority>0.7</priority>
+  </url>
+
+</urlset>
