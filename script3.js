@@ -53,13 +53,13 @@ document.addEventListener("DOMContentLoaded", () => {
       "fuck","fucking","shit","asshole","bitch","bastard",
       "dick","pussy","motherfucker","slut","whore",
       "suicide","kill yourself","die",
-      "c0n","fck","sh1t","a$$hole","cul","prout"
+      "c0n","fck","sh1t","a$$hole","cul","prout","caca","gros","shine"
     ];
 
     for (let mot of motsInterdits) {
       if (messagePropre.includes(mot)) {
         e.preventDefault();
-        alert("Nos filtres on détecté des insultes.Merci de modéré votre language\n\nMerci\n-----------------------------------------------------\nOur filters have detected offensive language. Please moderate your language.\n\nThank you");
+        alert("Nos filtres on détecté des insultes. Merci de modéré votre language\n\nMerci\n-----------------------------------------------------\nOur filters have detected offensive language. Please moderate your language.\n\nThank you");
         return;
       }
     }
