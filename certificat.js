@@ -19,10 +19,10 @@ function genererCertificat() {
     canvas.width = image.width;
     canvas.height = image.height;
 
-    ctx.drawImage(image, 0, 0);
+    ctx.drawImage(image, 0, -50);
 
-    ctx.font = "60px serif";
-    ctx.fillStyle = "gold";
+    ctx.font = "150px serif";
+    ctx.fillStyle = "#e6ae47";
     ctx.textAlign = "center";
     ctx.fillText(nom, canvas.width / 2, 380);
 
