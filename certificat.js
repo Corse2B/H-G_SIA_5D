@@ -19,12 +19,19 @@ function genererCertificat() {
     canvas.width = image.width;
     canvas.height = image.height;
 
-    ctx.drawImage(image, 0, -350);
+    // image entière, pas coupée
+    ctx.drawImage(image, 0, 0);
 
     ctx.font = "150px serif";
     ctx.fillStyle = "#e6ae47";
     ctx.textAlign = "center";
-    ctx.fillText(nom, canvas.width / 2, 380);
+
+    // ✅ SEUL CHANGEMENT ICI
+    ctx.fillText(
+      nom,
+      canvas.width / 2,
+      canvas.height * 0.7
+    );
 
     const nomFichier = nom
       .toLowerCase()
@@ -38,3 +45,4 @@ function genererCertificat() {
 }
 
 btn.addEventListener("click", genererCertificat);
+
