@@ -1,42 +1,40 @@
-console.log("JS chargé");
+const CERTIFICAT_IMAGE = "/certificat.jpg";
 
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
-const btn = document.getElementById("btnCertificat");
 const inputNom = document.getElementById("nom");
+const btn = document.getElementById("btnCertificat");
 
-if (!canvas || !btn || !inputNom) {
-  alert("ERREUR: élément HTML manquant");
-}
-
-btn.addEventListener("click", () => {
-  console.log("Bouton cliqué");
+function genererCertificat() {
+  const nom = inputNom.value.trim();
+  if (!nom) {
+    alert("Nom manquant");
+    return;
+  }
 
   const image = new Image();
-  image.src = "./certificat.jpg";
+  image.src = CERTIFICAT_IMAGE;
 
   image.onload = () => {
-    console.log("Image chargée");
-
     canvas.width = image.width;
     canvas.height = image.height;
 
     ctx.drawImage(image, 0, 0);
 
-    ctx.font = "48px serif";
-    ctx.fillStyle = "black";
+    ctx.font = "60px serif";
+    ctx.fillStyle = "gold";
     ctx.textAlign = "center";
-    ctx.fillText(inputNom.value, canvas.width / 2, 300);
+    ctx.fillText(nom, canvas.width / 2, 380);
 
-    const a = document.createElement("a");
-    a.href = canvas.toDataURL("image/jpeg");
-    a.download = "test.jpg";
-    a.click();
+    const nomFichier = nom
+      .toLowerCase()
+      .replace(/[^a-z0-9]/g, "_");
 
-    console.log("Téléchargement lancé");
+    const lien = document.createElement("a");
+    lien.download = `certificat_${nomFichier}.jpg`;
+    lien.href = canvas.toDataURL("image/jpeg");
+    lien.click();
   };
+}
 
-  image.onerror = () => {
-    alert("❌ certificat.jpg introuvable");
-  };
-});
+btn.addEventListener("click", genererCertificat);
