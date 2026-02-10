@@ -20,7 +20,7 @@ async function genererCertificat() {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       nom,
-      mission: "Mission Far West"
+      mission: "Mission Chateaux Forts"
     })
   });
 
@@ -38,10 +38,10 @@ async function genererCertificat() {
     canvas.width = image.width;
     canvas.height = image.height;
 
-    ctx.drawImage(image, 0, 0);
-    ctx.font = "48px serif";
+    ctx.drawImage(image, 0, 30);
+    ctx.font = "65px Gothic";
     ctx.textAlign = "center";
-    ctx.fillStyle = "#000";
+    ctx.fillStyle = "#e6ae47";
     ctx.fillText(nom, canvas.width / 2, 380);
 
     ctx.font = "20px monospace";
