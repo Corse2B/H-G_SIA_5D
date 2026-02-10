@@ -1,0 +1,7 @@
+name = "chronographia5dsia"
+compatibility_date = "2024-01-01"
+
+[[d1_databases]]
+binding = "DB_CERTIFICATS"
+database_name = "chronographia_db"
+database_id = "01702ec8-1531-4085-aa03-321511dbe9ed"
