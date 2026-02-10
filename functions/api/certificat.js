@@ -1,11 +1,13 @@
 export const onRequestPost = async ({ request, env }) => {
-  const { nom, mission } = await request.json();
+  const db = env.DB_CERTIFICATS; // 👈 NOUVEAU NOM
 
-  if (!nom || nom.length > 50) {
-    return new Response("Nom invalide", { status: 400 });
+  if (!db) {
+    return new Response("DB_CERT non bindée", { status: 500 });
   }
 
-  const result = await env.DB.prepare(
+  const { nom, mission } = await request.json();
+
+  const result = await db.prepare(
     "INSERT INTO certificats (nom, mission, date) VALUES (?, ?, ?)"
   ).bind(
     nom,
