@@ -19,7 +19,7 @@ function genererCertificat() {
     canvas.width = image.width;
     canvas.height = image.height;
 
-    ctx.drawImage(image, 0, -50);
+    ctx.drawImage(image, 0, -350);
 
     ctx.font = "150px serif";
     ctx.fillStyle = "#e6ae47";
