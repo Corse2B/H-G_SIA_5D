@@ -46,3 +46,4 @@ function genererCertificat() {
 
 btn.addEventListener("click", genererCertificat);
 
+
