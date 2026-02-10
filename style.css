@@ -5,6 +5,10 @@ body{
   color:#EFA64B;
   text-align: center;
   }
+#canvas{
+width: 500px;
+height:auto;
+}
 header{
 z-index:100;
 }
