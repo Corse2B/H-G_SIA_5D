@@ -19,18 +19,17 @@ function genererCertificat() {
     canvas.width = image.width;
     canvas.height = image.height;
 
-    // image entière, pas coupée
     ctx.drawImage(image, 0, 0);
 
     ctx.font = "150px serif";
     ctx.fillStyle = "#e6ae47";
     ctx.textAlign = "center";
 
-    // ✅ SEUL CHANGEMENT ICI
+    // position correcte
     ctx.fillText(
       nom,
       canvas.width / 2,
-      canvas.height * 6.2
+      canvas.height * 0.7
     );
 
     const nomFichier = nom
@@ -45,5 +44,3 @@ function genererCertificat() {
 }
 
 btn.addEventListener("click", genererCertificat);
-
-
