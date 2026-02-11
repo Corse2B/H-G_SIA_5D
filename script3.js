@@ -53,7 +53,8 @@ document.addEventListener("DOMContentLoaded", () => {
       "fuck","fucking","shit","asshole","bitch","bastard",
       "dick","pussy","motherfucker","slut","whore",
       "suicide","kill yourself","die",
-      "c0n","fck","sh1t","a$$hole","cul","prout","caca","gros","shine"
+      "c0n","fck","sh1t","a$$hole","cul","prout","caca","gros","shine","sale","chiotte",
+      "putain"
     ];
 
     for (let mot of motsInterdits) {
