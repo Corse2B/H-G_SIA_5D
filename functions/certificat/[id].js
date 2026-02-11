@@ -18,7 +18,7 @@ export const onRequestGet = async ({ params, env, request }) => {
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Certificat ${id}</title>
+<title>Chronographia 5D SIA Certificat ${id}</title>
 <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 <style>
 body { text-align:center; background:#f5f5f5; font-family:serif; }
@@ -59,8 +59,8 @@ image.onload = async () => {
   ctx.fillText(nom, canvas.width / 2, canvas.height * 0.5);
 
   // DATE
-  ctx.font = "50px serif";
-  ctx.fillStyle = "#333";
+  ctx.font = "70px serif";
+  ctx.fillStyle = "#e6ae47";
   ctx.fillText(
     "Date : " + new Date(date).toLocaleDateString(),
     canvas.width / 2,
@@ -69,7 +69,7 @@ image.onload = async () => {
 
   // ID discret en bas
   ctx.font = "30px monospace";
-  ctx.fillStyle = "#555";
+  ctx.fillStyle = "#e6ae47";
   ctx.fillText(
     "ID: " + id,
     canvas.width / 2,
