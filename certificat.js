@@ -50,8 +50,8 @@ async function genererCertificat() {
     ctx.fillText(nom, canvas.width / 2, canvas.height * 0.5);
 
     // DATE
-    ctx.font = "50px serif";
-    ctx.fillStyle = "#333";
+    ctx.font = "70px serif";
+    ctx.fillStyle = "#e6ae47";
     ctx.fillText(
       "Date : " + date.toLocaleDateString(),
       canvas.width / 2,
@@ -60,7 +60,7 @@ async function genererCertificat() {
 
     // ID discret
     ctx.font = "30px monospace";
-    ctx.fillStyle = "#555";
+    ctx.fillStyle = "#e6ae47";
     ctx.fillText(
       "ID: " + id,
       canvas.width / 2,
