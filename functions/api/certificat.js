@@ -1,27 +1,25 @@
 export const onRequestPost = async ({ request, env }) => {
   try {
-    // Vérifier que la DB existe
     if (!env.DB_CERTIFICATS) {
       return new Response("DB non configurée", { status: 500 });
     }
 
     const formData = await request.formData();
-
     const nom = formData.get("nom");
-    const mission = formData.get("mission");
 
-    // Sécurité : vérifier les champs
-    if (!nom || !mission) {
-      return new Response("Champs manquants", { status: 400 });
+    if (!nom) {
+      return new Response("Nom manquant", { status: 400 });
     }
 
-    // Insertion dans D1
+    // Date automatique
+    const date = new Date().toISOString();
+
     const result = await env.DB_CERTIFICATS
-      .prepare(
-        `INSERT INTO certificats (nom, mission)
-         VALUES (?, ?)`
-      )
-      .bind(nom, mission)
+      .prepare(`
+        INSERT INTO certificats (nom, date)
+        VALUES (?, ?)
+      `)
+      .bind(nom, date)
       .run();
 
     return new Response(
@@ -29,9 +27,7 @@ export const onRequestPost = async ({ request, env }) => {
         success: true,
         id: result.meta.last_row_id
       }),
-      {
-        headers: { "Content-Type": "application/json" }
-      }
+      { headers: { "Content-Type": "application/json" } }
     );
 
   } catch (err) {
