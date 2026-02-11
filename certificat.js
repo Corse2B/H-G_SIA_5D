@@ -5,13 +5,35 @@ const ctx = canvas.getContext("2d");
 const inputNom = document.getElementById("nom");
 const btn = document.getElementById("btnCertificat");
 
-function genererCertificat() {
+async function genererCertificat() {
   const nom = inputNom.value.trim();
   if (!nom) {
     alert("Nom manquant");
     return;
   }
 
+  // 1️⃣ On envoie en base d'abord
+  const fd = new FormData();
+  fd.append("nom", nom);
+
+  const response = await fetch("/api/certificat", {
+    method: "POST",
+    body: fd
+  });
+
+  const data = await response.json();
+
+  if (!data.success) {
+    alert("Erreur serveur");
+    return;
+  }
+
+  const id = data.id;
+  const date = new Date();
+  const verificationURL =
+    window.location.origin + "/certificat/" + id;
+
+  // 2️⃣ Charger l'image
   const image = new Image();
   image.src = CERTIFICAT_IMAGE;
 
@@ -21,41 +43,51 @@ function genererCertificat() {
 
     ctx.drawImage(image, 0, 0);
 
+    // NOM
     ctx.font = "150px serif";
     ctx.fillStyle = "#e6ae47";
     ctx.textAlign = "center";
+    ctx.fillText(nom, canvas.width / 2, canvas.height * 0.5);
 
+    // DATE
+    ctx.font = "50px serif";
+    ctx.fillStyle = "#333";
     ctx.fillText(
-      nom,
+      "Date : " + date.toLocaleDateString(),
       canvas.width / 2,
-      canvas.height * 0.5
+      canvas.height * 0.65
     );
 
-    // 🔥 1️⃣ On envoie le nom à l’API
-    const formData = new FormData();
-    formData.append("nom", nom);
+    // ID discret
+    ctx.font = "30px monospace";
+    ctx.fillStyle = "#555";
+    ctx.fillText(
+      "ID: " + id,
+      canvas.width / 2,
+      canvas.height * 0.95
+    );
 
-    const response = await fetch("/api/certificat", {
-      method: "POST",
-      body: formData
-    });
+    // QR CODE
+    const qrDataURL = await QRCode.toDataURL(verificationURL);
+    const qrImage = new Image();
+    qrImage.src = qrDataURL;
 
-    const data = await response.json();
+    qrImage.onload = () => {
+      ctx.drawImage(
+        qrImage,
+        canvas.width - 250,
+        canvas.height - 250,
+        200,
+        200
+      );
 
-    // 🔥 2️⃣ On télécharge l'image (comme avant)
-    const nomFichier = nom
-      .toLowerCase()
-      .replace(/[^a-z0-9]/g, "_");
-
-    const lien = document.createElement("a");
-    lien.download = `certificat_${nomFichier}.jpg`;
-    lien.href = canvas.toDataURL("image/jpeg");
-    lien.click();
-
-    // 🔥 3️⃣ On affiche le lien partage
-    alert("Lien de partage : " + window.location.origin + "/certificat/" + data.id);
+      // Télécharger seulement après le QR
+      const lien = document.createElement("a");
+      lien.download = "certificat_" + id + ".jpg";
+      lien.href = canvas.toDataURL("image/jpeg");
+      lien.click();
+    };
   };
 }
 
 btn.addEventListener("click", genererCertificat);
-
