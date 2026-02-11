@@ -15,7 +15,7 @@ export const onRequestGet = async ({ params, env }) => {
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Certificat ${id}</title>
+<title>Chronographia5dsia Certificat ${id}</title>
 <style>
 body {
   text-align:center;
@@ -35,7 +35,7 @@ button {
 </head>
 <body>
 
-<h2>Certificat officiel</h2>
+<h2>Voici le certificat de la quête des chateaux forts </h2>
 
 <canvas id="canvas"></canvas>
 <br>
