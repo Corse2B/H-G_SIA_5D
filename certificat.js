@@ -22,7 +22,7 @@ function genererCertificat() {
     // image entière, pas coupée
     ctx.drawImage(image, 0, 0);
 
-    ctx.font = "150px serif";
+    ctx.font = "100px serif";
     ctx.fillStyle = "#e6ae47";
     ctx.textAlign = "center";
 
@@ -30,7 +30,7 @@ function genererCertificat() {
     ctx.fillText(
       nom,
       canvas.width / 2,
-      canvas.height * 0.3
+      canvas.height * 2.0
     );
 
     const nomFichier = nom
