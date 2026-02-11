@@ -12,18 +12,15 @@ export const onRequestPost = async ({ request, env }) => {
       .bind(nom)
       .run();
 
-    const id = result.meta.last_row_id;
-
     return new Response(
-      JSON.stringify({
-        success: true,
-        id: id,
-        url: `/certificat/${id}`
-      }),
+      JSON.stringify({ success: true, result }),
       { headers: { "Content-Type": "application/json" } }
     );
 
   } catch (error) {
-    return new Response("Erreur serveur", { status: 500 });
+    return new Response(
+      "ERREUR SERVEUR : " + error.message,
+      { status: 500 }
+    );
   }
 };
