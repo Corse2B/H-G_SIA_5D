@@ -1,8 +1,8 @@
-export const onRequestGet = async ({ params, env }) => {
+export const onRequestGet = async ({ params, env, request }) => {
   const id = params.id;
 
   const result = await env.DB_CERTIFICATS
-    .prepare("SELECT nom FROM certificats WHERE id = ?")
+    .prepare("SELECT nom, date FROM certificats WHERE id = ?")
     .bind(id)
     .first();
 
@@ -10,67 +10,91 @@ export const onRequestGet = async ({ params, env }) => {
     return new Response("Certificat introuvable", { status: 404 });
   }
 
+  const url = new URL(request.url);
+  const fullURL = url.origin + "/certificat/" + id;
+
   return new Response(`
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Chronographia5dsia Certificat ${id}</title>
+<title>Certificat ${id}</title>
+<script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 <style>
-body {
-  text-align:center;
-  font-family: serif;
-  background:#f5f5f5;
-}
-canvas {
-  margin-top:20px;
-  max-width:90%;
-}
-button {
-  margin-top:20px;
-  padding:10px 20px;
-  font-size:16px;
-}
+body { text-align:center; background:#f5f5f5; font-family:serif; }
+canvas { max-width:95%; margin-top:20px; }
+button { margin-top:20px; padding:10px 20px; font-size:16px; }
 </style>
 </head>
 <body>
 
-<h2>Voici le certificat de la quête des chateaux forts </h2>
-
+<h2>Certificat officiel</h2>
 <canvas id="canvas"></canvas>
 <br>
 <button onclick="telecharger()">Télécharger</button>
 
 <script>
 const nom = ${JSON.stringify(result.nom)};
-const CERTIFICAT_IMAGE = "/certificat.jpg";
+const date = ${JSON.stringify(result.date)};
+const id = ${JSON.stringify(id)};
+const verificationURL = ${JSON.stringify(fullURL)};
 
+const CERTIFICAT_IMAGE = "/certificat.jpg";
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 const image = new Image();
 image.src = CERTIFICAT_IMAGE;
 
-image.onload = () => {
+image.onload = async () => {
   canvas.width = image.width;
   canvas.height = image.height;
 
   ctx.drawImage(image, 0, 0);
 
+  // NOM
   ctx.font = "150px serif";
   ctx.fillStyle = "#e6ae47";
   ctx.textAlign = "center";
+  ctx.fillText(nom, canvas.width / 2, canvas.height * 0.5);
 
+  // DATE
+  ctx.font = "50px serif";
+  ctx.fillStyle = "#333";
   ctx.fillText(
-    nom,
+    "Date : " + new Date(date).toLocaleDateString(),
     canvas.width / 2,
-    canvas.height * 0.5
+    canvas.height * 0.65
   );
+
+  // ID discret en bas
+  ctx.font = "30px monospace";
+  ctx.fillStyle = "#555";
+  ctx.fillText(
+    "ID: " + id,
+    canvas.width / 2,
+    canvas.height * 0.95
+  );
+
+  // QR CODE
+  const qrDataURL = await QRCode.toDataURL(verificationURL);
+  const qrImage = new Image();
+  qrImage.src = qrDataURL;
+
+  qrImage.onload = () => {
+    ctx.drawImage(
+      qrImage,
+      canvas.width - 250,
+      canvas.height - 250,
+      200,
+      200
+    );
+  };
 };
 
 function telecharger() {
   const lien = document.createElement("a");
-  lien.download = "certificat_${id}.jpg";
+  lien.download = "certificat_" + id + ".jpg";
   lien.href = canvas.toDataURL("image/jpeg");
   lien.click();
 }
