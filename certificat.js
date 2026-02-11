@@ -15,7 +15,7 @@ function genererCertificat() {
   const image = new Image();
   image.src = CERTIFICAT_IMAGE;
 
-  image.onload = () => {
+  image.onload = async () => {
     canvas.width = image.width;
     canvas.height = image.height;
 
@@ -25,13 +25,24 @@ function genererCertificat() {
     ctx.fillStyle = "#e6ae47";
     ctx.textAlign = "center";
 
-    // position correcte
     ctx.fillText(
       nom,
       canvas.width / 2,
       canvas.height * 0.5
     );
 
+    // 🔥 1️⃣ On envoie le nom à l’API
+    const formData = new FormData();
+    formData.append("nom", nom);
+
+    const response = await fetch("/api/certificat", {
+      method: "POST",
+      body: formData
+    });
+
+    const data = await response.json();
+
+    // 🔥 2️⃣ On télécharge l'image (comme avant)
     const nomFichier = nom
       .toLowerCase()
       .replace(/[^a-z0-9]/g, "_");
@@ -40,7 +51,11 @@ function genererCertificat() {
     lien.download = `certificat_${nomFichier}.jpg`;
     lien.href = canvas.toDataURL("image/jpeg");
     lien.click();
+
+    // 🔥 3️⃣ On affiche le lien partage
+    alert("Lien de partage : " + window.location.origin + "/certificat/" + data.id);
   };
 }
 
 btn.addEventListener("click", genererCertificat);
+
