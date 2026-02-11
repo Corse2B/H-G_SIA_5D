@@ -22,7 +22,7 @@ function genererCertificat() {
     // image entière, pas coupée
     ctx.drawImage(image, 0, 0);
 
-    ctx.font = "100px serif";
+    ctx.font = "150px serif";
     ctx.fillStyle = "#e6ae47";
     ctx.textAlign = "center";
 
