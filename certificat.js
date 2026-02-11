@@ -30,7 +30,7 @@ function genererCertificat() {
     ctx.fillText(
       nom,
       canvas.width / 2,
-      canvas.height * 0.9
+      canvas.height * 0.3
     );
 
     const nomFichier = nom
