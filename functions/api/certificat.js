@@ -1,23 +1,29 @@
 export const onRequestPost = async ({ request, env }) => {
-  const db = env.DB_CERTIFICATS; // 👈 NOUVEAU NOM
+  try {
+    const formData = await request.formData();
+    const nom = formData.get("nom");
 
-  if (!db) {
-    return new Response("DB_CERT non bindée", { status: 500 });
+    if (!nom) {
+      return new Response("Nom manquant", { status: 400 });
+    }
+
+    const result = await env.DB_CERTIFICATS
+      .prepare("INSERT INTO certificats (nom) VALUES (?)")
+      .bind(nom)
+      .run();
+
+    const id = result.meta.last_row_id;
+
+    return new Response(
+      JSON.stringify({
+        success: true,
+        id: id,
+        url: `/certificat/${id}`
+      }),
+      { headers: { "Content-Type": "application/json" } }
+    );
+
+  } catch (error) {
+    return new Response("Erreur serveur", { status: 500 });
   }
-
-  const { nom, mission } = await request.json();
-
-  const result = await db.prepare(
-    "INSERT INTO certificats (nom, mission, date) VALUES (?, ?, ?)"
-  ).bind(
-    nom,
-    mission,
-    new Date().toISOString()
-  ).run();
-
-  return new Response(JSON.stringify({
-    id: result.meta.last_row_id
-  }), {
-    headers: { "Content-Type": "application/json" }
-  });
 };
