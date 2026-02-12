@@ -14,6 +14,7 @@ height:auto;
   background-color:#0A2A43;
   color:#EFA64B;
   text-align: center;
+}
 header{
 z-index:100;
 }
@@ -478,4 +479,4 @@ summary {
     padding: 15px;
   }
 
-}
+
