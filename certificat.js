@@ -62,10 +62,10 @@ async function genererCertificat() {
       ctx.fillText(nom, canvas.width / 2, canvas.height * 0.5);
 
       // DATE
-      ctx.font = "60px serif";
+      ctx.font = "70px serif";
       ctx.fillStyle = "#e6ae47";
       ctx.fillText(
-        "Attribué le" + date.toLocaleDateString(),
+        "Attribué le " + date.toLocaleDateString(),
         canvas.width / 2,
         canvas.height * 0.65
       );
@@ -74,7 +74,7 @@ async function genererCertificat() {
       ctx.font = "30px monospace";
       ctx.fillStyle = "#e6ae47";
       ctx.fillText(
-        "Vous êtes" + currentId,
+        "Vous êtes " + currentId,
         canvas.width / 2,
         canvas.height * 0.95
       );
