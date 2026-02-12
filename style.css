@@ -32,9 +32,7 @@ margin-bottom: 800px;
 }
  #nom{
 display: block;      
-margin: 0 auto;
-margin-top: 50px;
-position:sticky;
+margin: 50px auto 0 auto;
 border-radius: 15px; 
 background-color:#2F4E69;
 border-color: #EFA64B;
