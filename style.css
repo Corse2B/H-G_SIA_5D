@@ -9,6 +9,19 @@ margin-top: 20px;
 width: 500px;
 height:auto;
 }
+#mdp{
+display: block;      
+margin: 300px auto 0 auto;
+border-radius: 15px; 
+background-color:#2F4E69;
+border-color: #EFA64B;
+font-size: 50px;
+line-height: 1.5;
+padding: 12px;
+font-family: inherit;
+color:#EFA64B;
+width:750px;
+  }
 #lienPartage{
   background-color:#2F4E69;
   color:#EFA64B;
