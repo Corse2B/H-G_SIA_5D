@@ -19,6 +19,7 @@ header{
 z-index:100;
 }
  #nom{
+margin-top: 50px;
 position:sticky;
 border-radius: 15px; 
 background-color:#2F4E69;
@@ -32,7 +33,7 @@ font-family: inherit;
 color:#EFA64B;
 width:750px;
 display: block;      
-  margin: 0 auto;
+margin: 0 auto;
   }
 .top-controls {
   display: flex;
