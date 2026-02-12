@@ -67,7 +67,7 @@ image.onload = async () => {
   ctx.font = "70px serif";
   ctx.fillStyle = "#e6ae47";
   ctx.fillText(
-    "Créé le" + new Date(date).toLocaleDateString(),
+    "Attribué le" + new Date(date).toLocaleDateString(),
     canvas.width / 2,
     canvas.height * 0.65
   );
