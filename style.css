@@ -31,6 +31,9 @@ padding: 12px;
 font-family: inherit;
 color:#EFA64B;
 width:750px;
+display: block;      
+  margin: 0 auto;
+}
   }
 .top-controls {
   display: flex;
