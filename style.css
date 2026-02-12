@@ -1,4 +1,3 @@
-
 body{
   margin:0;
   background-color:#0A2A43;
@@ -17,6 +16,17 @@ height:auto;
 }
 header{
 z-index:100;
+}
+#btnGenerer,
+#btnTelecharger{
+ position:sticky;
+ background-color:#2F4E69;
+  padding:5px;
+  border-radius: 15px;
+  margin: 10px;
+  border-color: #EFA64B;
+color:#EFA64B;
+margin-bottom: 800px;
 }
  #nom{
 margin-top: 50px;
