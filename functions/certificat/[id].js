@@ -26,7 +26,14 @@ export const onRequestGet = async ({ params, env, request }) => {
 </style>
 </head>
 <body>
+<header>
 <h1>Voici le certificat de ${nom}</h1>
+<h2>Ce blog a été créé par les élèves, pour les élèves </h2>
+<div class="top-controls">
+<a href=index.html class=LienPage>Retour au Blog</a>
+
+</div>
+</header>
 <canvas id="canvas"></canvas>
 <br>
 <button onclick="telecharger()">Télécharger</button>
