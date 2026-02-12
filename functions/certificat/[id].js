@@ -36,7 +36,7 @@ export const onRequestGet = async ({ params, env, request }) => {
 </header>
 <canvas id="canvas"></canvas>
 <br>
-<button onclick="telecharger()">Télécharger</button>
+<button id="BTMessage" onclick="telecharger()">Télécharger</button>
 
 <script>
 const nom = ${JSON.stringify(result.nom)};
