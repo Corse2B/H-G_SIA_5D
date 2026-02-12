@@ -21,14 +21,12 @@ export const onRequestGet = async ({ params, env, request }) => {
 <title>Chronographia 5D SIA Certificat ${id}</title>
 <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
 <style>
-body { text-align:center; background:#f5f5f5; font-family:serif; }
-canvas { max-width:95%; margin-top:20px; }
-button { margin-top:20px; padding:10px 20px; font-size:16px; }
+<link rel="preload" href="/style.css" as="style">
+<link rel="stylesheet" href="/style.css">
 </style>
 </head>
 <body>
-
-<h2>Certificat officiel</h2>
+<h1>Voici le certificat de ${nom}</h1>
 <canvas id="canvas"></canvas>
 <br>
 <button onclick="telecharger()">Télécharger</button>
