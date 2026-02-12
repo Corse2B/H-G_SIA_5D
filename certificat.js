@@ -1,3 +1,5 @@
+document.addEventListener("DOMContentLoaded", () => {
+
 const CERTIFICAT_IMAGE = "/certificat.jpg";
 
 const canvas = document.getElementById("canvas");
@@ -7,10 +9,11 @@ const btnGenerer = document.getElementById("btnGenerer");
 const btnTelecharger = document.getElementById("btnTelecharger");
 const lienPartage = document.getElementById("lienPartage");
 
-let imageGeneree = null; // stocke l'image finale
+let imageGeneree = null;
 let currentId = null;
 
 async function genererCertificat() {
+
   const nom = inputNom.value.trim();
   if (!nom) {
     alert("Nom manquant");
@@ -18,91 +21,95 @@ async function genererCertificat() {
   }
 
   btnTelecharger.disabled = true;
-  lienPartage.textContent = "";
+  lienPartage.innerHTML = "";
 
-  // 1️⃣ Enregistrer en base
-  const fd = new FormData();
-  fd.append("nom", nom);
+  try {
 
-  const response = await fetch("/api/certificat", {
-    method: "POST",
-    body: fd
-  });
+    const fd = new FormData();
+    fd.append("nom", nom);
 
-  const data = await response.json();
-  if (!data.success) {
-    alert("Erreur serveur");
-    return;
-  }
+    const response = await fetch("/api/certificat", {
+      method: "POST",
+      body: fd
+    });
 
-  currentId = data.id;
-  const date = new Date();
-  const verificationURL =
-    window.location.origin + "/certificat/" + currentId;
+    const data = await response.json();
 
-  // 2️⃣ Charger image
-  const image = new Image();
-  image.src = CERTIFICAT_IMAGE;
+    if (!data.success) {
+      alert("Erreur serveur");
+      return;
+    }
 
-  image.onload = async () => {
-    canvas.width = image.width;
-    canvas.height = image.height;
+    currentId = data.id;
+    const date = new Date();
+    const verificationURL =
+      window.location.origin + "/certificat/" + currentId;
 
-    ctx.drawImage(image, 0, 0);
+    const image = new Image();
+    image.src = CERTIFICAT_IMAGE;
 
-    // NOM
-    ctx.font = "150px serif";
-    ctx.fillStyle = "#e6ae47";
-    ctx.textAlign = "center";
-    ctx.fillText(nom, canvas.width / 2, canvas.height * 0.5);
+    image.onload = async () => {
 
-    // DATE
-    ctx.font = "70px serif";
-    ctx.fillStyle = "#e6ae47";
-    ctx.fillText(
-      "Date : " + date.toLocaleDateString(),
-      canvas.width / 2,
-      canvas.height * 0.65
-    );
+      canvas.width = image.width;
+      canvas.height = image.height;
 
-    // ID discret
-    ctx.font = "30px monospace";
-    ctx.fillStyle = "#e6ae47";
-    ctx.fillText(
-      "ID: " + currentId,
-      canvas.width / 2,
-      canvas.height * 0.95
-    );
+      ctx.drawImage(image, 0, 0);
 
-    // QR
-    const qrDataURL = await QRCode.toDataURL(verificationURL);
-    const qrImage = new Image();
-    qrImage.src = qrDataURL;
+      // NOM
+      ctx.font = "150px serif";
+      ctx.fillStyle = "#e6ae47";
+      ctx.textAlign = "center";
+      ctx.fillText(nom, canvas.width / 2, canvas.height * 0.5);
 
-    qrImage.onload = () => {
-      ctx.drawImage(
-        qrImage,
-        canvas.width - 250,
-        canvas.height - 250,
-        200,
-        200
+      // DATE
+      ctx.font = "60px serif";
+      ctx.fillStyle = "#e6ae47";
+      ctx.fillText(
+        "Date : " + date.toLocaleDateString(),
+        canvas.width / 2,
+        canvas.height * 0.65
       );
 
-      // Sauvegarde image finale
-      imageGeneree = canvas.toDataURL("image/jpeg");
+      // ID
+      ctx.font = "30px monospace";
+      ctx.fillStyle = "#e6ae47";
+      ctx.fillText(
+        "ID: " + currentId,
+        canvas.width / 2,
+        canvas.height * 0.95
+      );
 
-      // Activer bouton télécharger
-      btnTelecharger.disabled = false;
+      // QR
+      const qrDataURL = await QRCode.toDataURL(verificationURL);
+      const qrImage = new Image();
+      qrImage.src = qrDataURL;
 
-      // Afficher lien sous le certificat
-      lienPartage.innerHTML =
-        'Lien de partage : <a href="' +
-        verificationURL +
-        '" target="_blank">' +
-        verificationURL +
-        "</a>";
+      qrImage.onload = () => {
+
+        ctx.drawImage(
+          qrImage,
+          canvas.width - 250,
+          canvas.height - 250,
+          200,
+          200
+        );
+
+        imageGeneree = canvas.toDataURL("image/jpeg");
+        btnTelecharger.disabled = false;
+
+        lienPartage.innerHTML =
+          'Lien de partage : <a href="' +
+          verificationURL +
+          '" target="_blank">' +
+          verificationURL +
+          "</a>";
+      };
     };
-  };
+
+  } catch (err) {
+    console.error(err);
+    alert("Erreur JS");
+  }
 }
 
 function telechargerCertificat() {
@@ -116,3 +123,5 @@ function telechargerCertificat() {
 
 btnGenerer.addEventListener("click", genererCertificat);
 btnTelecharger.addEventListener("click", telechargerCertificat);
+
+});
