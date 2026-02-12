@@ -249,7 +249,7 @@ header h2 {
 background-color:#2A3F55;
 border-color: #EFA64B;
 }
-#BTMessage{
+.BTMessage{
  position:sticky;
  background-color:#2F4E69;
   padding:5px;
