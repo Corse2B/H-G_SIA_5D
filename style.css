@@ -17,6 +17,20 @@ height:auto;
 header{
 z-index:100;
 }
+ #nom{
+position:sticky;
+border-radius: 15px; 
+background-color:#2F4E69;
+padding:5px;
+margin:10px;
+border-color: #EFA64B;
+font-size: 20px;
+line-height: 1.5;
+padding: 12px;
+font-family: inherit;
+color:#EFA64B;
+width:750px;
+  }
 .top-controls {
   display: flex;
   justify-content: flex-end; /* à droite */
