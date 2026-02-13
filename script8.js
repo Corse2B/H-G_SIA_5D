@@ -56,3 +56,17 @@ function afficherSite() {
 document.addEventListener("DOMContentLoaded", () => {
   document.documentElement.style.visibility = "visible";
 });
+// =======================
+// ENTER = vérifier
+// =======================
+document.addEventListener("DOMContentLoaded", () => {
+  const inputMdp = document.getElementById("mdp");
+
+  inputMdp.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      verifier();
+    }
+  
+  });
+});
