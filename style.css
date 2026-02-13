@@ -4,6 +4,16 @@ body{
   color:#EFA64B;
   text-align: center;
   }
+#background {
+  position: fixed;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transition: opacity 1.5s ease-in-out;
+  z-index: -1;
+  opacity: 1;
+}
 #canvas{
 margin-top: 20px;
 width: 500px;
