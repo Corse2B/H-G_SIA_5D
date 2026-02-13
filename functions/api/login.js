@@ -1,41 +1,52 @@
-export const onRequestPost = async ({ request, env }) => {
-
-  const SALT = "chronographia5dsia3245684902";
+export async function onRequestPost(context) {
+  const { request, env } = context;
 
   try {
+    // 🔹 Récupération du mot de passe envoyé
     const formData = await request.formData();
     const password = formData.get("password");
 
     if (!password) {
-      return Response.json({ success: false });
+      return new Response(
+        JSON.stringify({ success: false }),
+        { status: 400 }
+      );
     }
 
-    // Hash côté serveur
-    const data = `${password} ${SALT}`;
+    // 🔹 Ton SALT (DOIT être EXACTEMENT le même que celui utilisé pour générer le hash en base)
+    const SALT = "chronographia5dsia3245684902";
 
-    const buffer = await crypto.subtle.digest(
-      "SHA-256",
-      new TextEncoder().encode(data)
-    );
+    // 🔹 Création du hash SHA-256
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password + " " + SALT);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hash = hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
 
-    const hashHex = [...new Uint8Array(buffer)]
-      .map(b => b.toString(16).padStart(2, "0"))
-      .join("");
-
-    // Vérification en base
-    const stmt = env.DB.prepare(
+    // 🔹 Vérification en base D1
+    const result = await env.DB.prepare(
       "SELECT * FROM users WHERE username = ? AND password_hash = ?"
-    );
+    )
+    .bind("admin", hash)
+    .first();
 
-    const user = await stmt.bind("admin", hashHex).first();
-
-    if (!user) {
-      return Response.json({ success: false });
+    if (result) {
+      return new Response(
+        JSON.stringify({ success: true }),
+        { status: 200 }
+      );
+    } else {
+      return new Response(
+        JSON.stringify({ success: false }),
+        { status: 200 }
+      );
     }
-
-    return Response.json({ success: true });
 
   } catch (err) {
-    return Response.json({ success: false });
+    return new Response(
+      JSON.stringify({ success: false, error: err.message }),
+      { status: 500 }
+    );
   }
-};
+}
+
