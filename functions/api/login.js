@@ -4,7 +4,7 @@ export async function onRequestPost(context) {
   const formData = await request.formData();
   const password = formData.get("password");
 
-  const SALT = "TON_SALT_ICI";
+  const SALT = "chronohraphia5dsia";
 
   const encoder = new TextEncoder();
   const data = encoder.encode(password + " " + SALT);
