@@ -55,31 +55,25 @@ async function genererCertificat() {
 
       ctx.drawImage(image, 0, 0);
 
-      // NOM
       ctx.font = "150px serif";
       ctx.fillStyle = "#e6ae47";
       ctx.textAlign = "center";
       ctx.fillText(nom, canvas.width / 2, canvas.height * 0.5);
 
-      // DATE
       ctx.font = "70px serif";
-      ctx.fillStyle = "#e6ae47";
       ctx.fillText(
         "Attribué le " + date.toLocaleDateString(),
         canvas.width / 2,
         canvas.height * 0.65
       );
 
-      // ID
       ctx.font = "30px monospace";
-      ctx.fillStyle = "#e6ae47";
       ctx.fillText(
         "Vous êtes " + currentId,
         canvas.width / 2,
         canvas.height * 0.95
       );
 
-      // QR
       const qrDataURL = await QRCode.toDataURL(verificationURL);
       const qrImage = new Image();
       qrImage.src = qrDataURL;
@@ -121,7 +115,15 @@ function telechargerCertificat() {
   lien.click();
 }
 
+/* EVENTS EN BAS */
 btnGenerer.addEventListener("click", genererCertificat);
 btnTelecharger.addEventListener("click", telechargerCertificat);
+
+inputNom.addEventListener("keydown", (event) => {
+  if (event.key === "Enter") {
+    event.preventDefault();
+    genererCertificat();
+  }
+});
 
 });
