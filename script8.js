@@ -24,7 +24,7 @@ async function verifier() {
   const password = document.getElementById("mdp").value;
 
   if (!password) {
-    alert("Entre un mot de passe");
+    alert("Enter une phrase");
     return;
   }
 
@@ -42,7 +42,7 @@ async function verifier() {
 
     if (data.success) {
 
-      alert("Connexion réussie ✅");
+      alert("Bravo ! /n Vous avez trouvé la phrase");
 
       document.getElementById("login").style.display = "none";
       document.getElementById("site").style.display = "block";
@@ -52,7 +52,7 @@ async function verifier() {
     } else {
 
       // 🔥 Affiche le message envoyé par le serveur
-      alert(data.error || "Mot de passe incorrect");
+      alert(data.error || "Vous vous êtes trompé de phrase");
 
     }
 
