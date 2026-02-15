@@ -4,7 +4,7 @@ export async function onRequestPost({ request, env }) {
     const password = formData.get("password");
 
     if (!password) {
-      return json(false, "Mot de passe manquant", 400);
+      return json(false, "Veuillez entrer la phrase ", 400);
     }
 
     // 🔐 Hash SHA-256
@@ -34,7 +34,7 @@ export async function onRequestPost({ request, env }) {
 
       return json(
         false,
-        `Compte bloqué temporairement.\nRéessaie dans ${minutesLeft} minute(s).`,
+        `Compte bloqué temporairement.\nRéessaiez dans ${minutesLeft} minute(s).`,
         403
       );
     }
