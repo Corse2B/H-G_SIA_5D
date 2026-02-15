@@ -15,6 +15,7 @@ export async function onRequestPost({ request, env }) {
       .map(b => b.toString(16).padStart(2, "0"))
       .join("");
 
+    // 🔎 Récupère l'utilisateur
     const user = await env.DB_CERTIFICATS
       .prepare("SELECT * FROM users WHERE username = ?")
       .bind("admin")
@@ -26,14 +27,22 @@ export async function onRequestPost({ request, env }) {
 
     const now = Date.now();
 
-    // 🔒 Vérifie si bloqué
+    // 🔒 Vérifie si le compte est bloqué
     if (user.lock_until && now < user.lock_until) {
-      return json(false, "Vous avez atteint votre limite d'essaies", 403);
+
+      const minutesLeft = Math.ceil((user.lock_until - now) / 60000);
+
+      return json(
+        false,
+        `Compte bloqué temporairement.\nRéessaie dans ${minutesLeft} minute(s).`,
+        403
+      );
     }
 
-    // ✅ Mot de passe correct
+    // ✅ Si mot de passe correct
     if (user.password_hash === hash) {
 
+      // Reset compteur
       await env.DB_CERTIFICATS
         .prepare("UPDATE users SET failed_attempts = 0, lock_until = 0 WHERE id = ?")
         .bind(user.id)
@@ -46,6 +55,7 @@ export async function onRequestPost({ request, env }) {
     let attempts = (user.failed_attempts || 0) + 1;
 
     if (attempts >= 5) {
+
       const lockTime = now + (15 * 60 * 1000); // 15 minutes
 
       await env.DB_CERTIFICATS
@@ -53,23 +63,32 @@ export async function onRequestPost({ request, env }) {
         .bind(attempts, lockTime, user.id)
         .run();
 
-      return json(false, "Trop d'essais. Bloqué 15 min.", 403);
+      return json(
+        false,
+        "Trop d'essais.\nCompte bloqué 15 minutes.",
+        403
+      );
     }
 
+    // Met à jour le nombre d'essais
     await env.DB_CERTIFICATS
       .prepare("UPDATE users SET failed_attempts = ? WHERE id = ?")
       .bind(attempts, user.id)
       .run();
 
-    return json(false, `Mot de passe incorrect (${attempts}/5)`, 401);
+    return json(
+      false,
+      `Mot de passe incorrect.\nEssai ${attempts}/5`,
+      401
+    );
 
   } catch (err) {
-    return json(false, err.message, 500);
+    return json(false, "Erreur serveur", 500);
   }
 }
 
 
-// Fonction helper
+// 🔧 Fonction utilitaire pour renvoyer du JSON propre
 function json(success, error, status) {
   return new Response(
     JSON.stringify({ success, error }),
@@ -79,4 +98,3 @@ function json(success, error, status) {
     }
   );
 }
-
