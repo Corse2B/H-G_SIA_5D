@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const login = document.getElementById("login");
   const site = document.getElementById("site");
 
-  // 🔁 Si déjà connecté (localStorage)
+  // 🔁 Si déjà connecté
   if (localStorage.getItem("ok") === "true") {
     if (login) login.style.display = "none";
     if (site) site.style.display = "block";
@@ -14,17 +14,22 @@ document.addEventListener("DOMContentLoaded", () => {
     if (login) login.style.display = "block";
     if (site) site.style.display = "none";
   }
+
 });
 
 
-// 🔐 Fonction appelée par le bouton
+// 🔐 Fonction login
 async function verifier() {
-  const password = document.getElementById("mdp").value;
-  const erreur = document.getElementById("erreur");
 
-  erreur.textContent = "";
+  const password = document.getElementById("mdp").value;
+
+  if (!password) {
+    alert("Entre un mot de passe");
+    return;
+  }
 
   try {
+
     const fd = new FormData();
     fd.append("password", password);
 
@@ -33,29 +38,29 @@ async function verifier() {
       body: fd
     });
 
-    if (!res.ok) {
-      throw new Error("Erreur HTTP");
-    }
-
     const data = await res.json();
 
     if (data.success) {
 
-      // Cache login
-      document.getElementById("login").style.display = "none";
+      alert("Connexion réussie ✅");
 
-      // Affiche le site
+      document.getElementById("login").style.display = "none";
       document.getElementById("site").style.display = "block";
 
-      // Sauvegarde connexion
       localStorage.setItem("ok", "true");
 
     } else {
-      erreur.textContent = "Mot de passe incorrect";
+
+      // 🔥 Affiche le message envoyé par le serveur
+      alert(data.error || "Mot de passe incorrect");
+
     }
 
   } catch (err) {
-    erreur.textContent = "Erreur serveur";
+
+    alert("Erreur serveur");
     console.error("Erreur :", err);
+
   }
 }
+
