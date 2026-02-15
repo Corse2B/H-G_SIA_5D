@@ -18,7 +18,7 @@ export async function onRequestPost({ request, env }) {
       .map(b => b.toString(16).padStart(2, "0"))
       .join("");
 
-    // 🔎 Vérifie dans la table "user"
+    // 🔎 Vérification dans la table "users"
     const user = await env.DB_CERTIFICATS
       .prepare("SELECT id FROM users WHERE username = ? AND password_hash = ?")
       .bind("admin", hash)
