@@ -1,32 +1,4 @@
-// =======================
-// AUTO-LOGIN AU CHARGEMENT
-// =======================
-document.addEventListener("DOMContentLoaded", () => {
-
-  // Si déjà connecté
-  if (localStorage.getItem("ok") === "true") {
-    afficherSite();
-  }
-
-  // Anti-flash
-  document.documentElement.style.visibility = "visible";
-
-  // ENTER = vérifier
-  const inputMdp = document.getElementById("mdp");
-  inputMdp.addEventListener("keydown", (event) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      verifier();
-    }
-  });
-});
-
-
-// =======================
-// VÉRIFICATION
-// =======================
 async function verifier() {
-
   const password = document.getElementById("mdp").value;
   const erreur = document.getElementById("erreur");
 
@@ -35,31 +7,18 @@ async function verifier() {
   const fd = new FormData();
   fd.append("password", password);
 
-  try {
-    const response = await fetch("/api/login", {
-      method: "POST",
-      body: fd
-    });
+  const res = await fetch("/api/login", {
+    method: "POST",
+    body: fd
+  });
 
-    const data = await response.json();
+  const data = await res.json();
 
-    if (data.success) {
-      localStorage.setItem("ok", "true");
-      afficherSite();
-    } else {
-      erreur.textContent = "Mot incorrect";
-    }
-
-  } catch (err) {
-    erreur.textContent = "Erreur serveur";
+  if (data.success) {
+    document.getElementById("login").style.display = "none";
+    document.getElementById("secret").style.display = "block";
+  } else {
+    erreur.textContent = "Mot de passe incorrect";
   }
 }
 
-
-// =======================
-// AFFICHAGE
-// =======================
-function afficherSite() {
-  document.getElementById("login").style.display = "none";
-  document.getElementById("site").style.display = "block";
-}
