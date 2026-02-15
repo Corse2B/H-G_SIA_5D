@@ -5,12 +5,12 @@ export async function onRequestPost({ request, env }) {
 
     if (!password) {
       return new Response(
-        JSON.stringify({ success: false, error: "No password" }),
-        { status: 400 }
+        JSON.stringify({ success: false }),
+        { status: 400, headers: { "Content-Type": "application/json" } }
       );
     }
 
-    // Hash SHA-256
+    // 🔐 Hash SHA-256
     const encoder = new TextEncoder();
     const data = encoder.encode(password);
     const hashBuffer = await crypto.subtle.digest("SHA-256", data);
@@ -18,20 +18,21 @@ export async function onRequestPost({ request, env }) {
       .map(b => b.toString(16).padStart(2, "0"))
       .join("");
 
-    const user = await env.DB
-      .prepare("SELECT id FROM users WHERE username = ? AND password_hash = ?")
+    // 🔎 Vérifie dans la table "user"
+    const user = await env.DB_CERTIFICATS
+      .prepare("SELECT id FROM user WHERE username = ? AND password_hash = ?")
       .bind("admin", hash)
       .first();
 
     return new Response(
       JSON.stringify({ success: !!user }),
-      { headers: { "Content-Type": "application/json" } }
+      { status: 200, headers: { "Content-Type": "application/json" } }
     );
 
   } catch (err) {
     return new Response(
       JSON.stringify({ success: false, error: err.message }),
-      { status: 500 }
+      { status: 500, headers: { "Content-Type": "application/json" } }
     );
   }
 }
