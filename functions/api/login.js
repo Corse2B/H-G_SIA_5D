@@ -20,7 +20,7 @@ export async function onRequestPost({ request, env }) {
 
     // 🔎 Vérifie dans la table "user"
     const user = await env.DB_CERTIFICATS
-      .prepare("SELECT id FROM user WHERE username = ? AND password_hash = ?")
+      .prepare("SELECT id FROM users WHERE username = ? AND password_hash = ?")
       .bind("admin", hash)
       .first();
 
