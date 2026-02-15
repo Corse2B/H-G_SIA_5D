@@ -42,7 +42,7 @@ async function verifier() {
 
     if (data.success) {
 
-      alert("Bravo ! /n Vous avez trouvé la phrase");
+      alert("Bravo ! \nVous avez trouvé la phrase");
 
       document.getElementById("login").style.display = "none";
       document.getElementById("site").style.display = "block";
