@@ -28,7 +28,7 @@ export async function onRequestPost({ request, env }) {
 
     // 🔒 Vérifie si bloqué
     if (user.lock_until && now < user.lock_until) {
-      return json(false, "Compte bloqué temporairement", 403);
+      return json(false, "Vous avez atteint votre limite d'essaies", 403);
     }
 
     // ✅ Mot de passe correct
