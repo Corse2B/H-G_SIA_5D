@@ -4,6 +4,10 @@ body{
   color:#EFA64B;
   text-align: center;
   }
+.fade-out {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
 #background {
   position: fixed;
   inset: 0;
