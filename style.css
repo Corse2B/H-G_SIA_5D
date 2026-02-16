@@ -41,6 +41,9 @@ width:750px;
 }
 header{
 z-index:100;
+  background: rgba(10, 42, 67, 0.6); 
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px); 
 }
 #btnGenerer,
 #btnTelecharger{
