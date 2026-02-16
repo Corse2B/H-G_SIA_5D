@@ -40,20 +40,20 @@ width:750px;
  padding: 12px; 
 }
 header{
+   border-bottom: 2px solid #EFA64B;
+  box-sizing: border-box;
   position: sticky;
   top: 0;
-  width: 100%;
-  padding: 30px 20px;
-  text-align: center;
-  z-index: 1000;
-
+  width: 100%;                 /* prend toute la largeur */
+  padding: 30px 20px;          /* espace interne */
+  text-align: center;           /* centre le texte */
+  z-index: 1000;               /* au-dessus du contenu */
+  border-bottom: 2px solid #EFA64B;
+  box-sizing: border-box;       /* padding inclus dans la largeur */
   /* 🔥 Effet verre */
   background: rgba(10, 42, 67, 0.6); /* semi-transparent */
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px); /* Safari */
-  
-  border-bottom: 2px solid #EFA64B;
-  box-sizing: border-box;
 }
 #btnGenerer,
 #btnTelecharger{
@@ -258,17 +258,7 @@ transition: transform 0.3s ease;
   margin-bottom: 50%;
   font-size: 24px;
   }
-  header {
-  position: sticky;
-  top: 0;
-  width: 100%;                 /* prend toute la largeur */
-  background-color: #0A2A43;
-  padding: 30px 20px;          /* espace interne */
-  text-align: center;           /* centre le texte */
-  z-index: 1000;               /* au-dessus du contenu */
-  border-bottom: 2px solid #EFA64B;
-  box-sizing: border-box;       /* padding inclus dans la largeur */
-}
+  
 header h1 {
   margin: 0 0 15px 0; /* marge en bas seulement */
 }
@@ -308,8 +298,6 @@ header h2 {
 #page-content.blur {
   filter: blur(6px);
   transition: filter 0.3s ease;
-}
-
 }
 #BTMessage:hover{
 background-color:#2A3F55;
