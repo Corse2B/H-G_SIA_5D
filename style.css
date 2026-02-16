@@ -15,8 +15,8 @@ body{
   opacity: 1;
    /* 🔥 Effet verre */
   background: rgba(10, 42, 67, 0.6); /* semi-transparent */
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px); /* Safari */
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px); /* Safari */
 }
 #canvas{
 margin-top: 20px;
