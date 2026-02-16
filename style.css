@@ -13,6 +13,10 @@ body{
   transition: opacity 1.5s ease-in-out;
   z-index: -1;
   opacity: 1;
+   /* 🔥 Effet verre */
+  background: rgba(10, 42, 67, 0.6); /* semi-transparent */
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px); /* Safari */
 }
 #canvas{
 margin-top: 20px;
@@ -390,13 +394,6 @@ position:sticky;
 }
 a{
 color: #EFA64B;
-}
-
-@keyframes fond {
-  0%   { background: #2F4E69; }
-  50%  { background: #EFA64B; }
-  50%  { color:#2F4E69;} 
-  100% { background: #2F4E69; }
 }
 .LienPage:hover,
 #menu1:hover summary,
