@@ -1,4 +1,4 @@
-const header = document.querySelector("header");
+coconst header = document.querySelector("header");
 const elements = document.querySelectorAll(".content, .photo, #MP");
 
 window.addEventListener("scroll", () => {
@@ -7,15 +7,19 @@ window.addEventListener("scroll", () => {
   elements.forEach(el => {
     const rect = el.getBoundingClientRect();
 
-    // Distance entre le haut de l’élément et le bas du header
-    const distance = rect.top - headerBottom;
+    const elementTop = rect.top;
+    const elementBottom = rect.bottom;
+    const elementHeight = rect.height;
 
-    const fadeDistance = 200; // 🔥 plus grand = plus progressif
+    // Zone de transition = hauteur de l’élément
+    const fadeStart = headerBottom;
+    const fadeEnd = headerBottom - elementHeight;
 
-    if (distance < fadeDistance) {
-      let opacity = distance / fadeDistance;
-      opacity = Math.min(Math.max(opacity, 0), 1);
-      el.style.opacity = opacity;
+    if (elementBottom <= fadeStart && elementTop >= fadeEnd) {
+      const progress = (elementBottom - fadeEnd) / elementHeight;
+      el.style.opacity = Math.max(0, Math.min(1, progress));
+    } else if (elementBottom < fadeEnd) {
+      el.style.opacity = 0;
     } else {
       el.style.opacity = 1;
     }
