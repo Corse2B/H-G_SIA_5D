@@ -7,11 +7,17 @@ window.addEventListener("scroll", () => {
   elements.forEach(el => {
     const rect = el.getBoundingClientRect();
 
-    // Si le haut de l'élément touche le header
-    if (rect.top <= headerBottom) {
-      el.classList.add("fade-out");
+    // Distance entre le haut de l’élément et le bas du header
+    const distance = rect.top - headerBottom;
+
+    const fadeDistance = 200; // 🔥 plus grand = plus progressif
+
+    if (distance < fadeDistance) {
+      let opacity = distance / fadeDistance;
+      opacity = Math.min(Math.max(opacity, 0), 1);
+      el.style.opacity = opacity;
     } else {
-      el.classList.remove("fade-out");
+      el.style.opacity = 1;
     }
   });
 });
