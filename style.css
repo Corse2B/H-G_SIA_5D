@@ -4,31 +4,12 @@ body{
   color:#EFA64B;
   text-align: center;
   }
-.carousel {
-  display: flex;
-  align-items: center;
-  gap: 60px;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  padding: 100px 10vw;
-  perspective: 1000px;
-}
-
-.carousel::-webkit-scrollbar {
-  display: none;
-}
-
-.card {
-  flex: 0 0 60%;
-  scroll-snap-align: center;
-  background: #2F4E69;
-  border-radius: 20px;
-  padding: 40px;
-  color: #EFA64B;
-  transition: transform 0.4s ease, opacity 0.4s ease;
-  transform: scale(0.7);
-  opacity: 0.5;
-}
+  #footer {
+    font-size: 12px;
+    padding: 15px;
+    background-color:#0A2A43;
+    border-radius: 10px;
+  }
 .fade-out {
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -531,9 +512,11 @@ summary {
   }
 
   /* --- Footer --- */
-  footer {
+  #footer {
     font-size: 12px;
     padding: 15px;
+    background-color:#0A2A43;
+    border-radius: 10px;
   }
 
 
