@@ -9,8 +9,8 @@ body{
     padding: 10px;
     background-color:#2A3F55;
     border-radius: 10px;
-    width: 750px;
-    margin: 0 auto;
+    width: 600px;
+    margin: 0 100px auto;
   }
 .fade-out {
   opacity: 0;
