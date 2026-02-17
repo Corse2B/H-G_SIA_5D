@@ -3,6 +3,7 @@ body{
   background-color:#0A2A43;
   color:#EFA64B;
   text-align: center;
+  direction: rtl;
   }
 .fade-out {
   opacity: 0;
