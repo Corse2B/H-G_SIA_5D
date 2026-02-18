@@ -78,7 +78,7 @@ export async function onRequestPost({ request, env }) {
 
     return json(
       false,
-      `Mot de passe incorrect.\nEssai ${attempts}/5`,
+      `Mauvaise phrase\nEssai ${attempts}/5`,
       401
     );
 
