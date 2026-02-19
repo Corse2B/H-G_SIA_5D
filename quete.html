@@ -42,7 +42,7 @@
 3.Entrez-la ci-dessous<br>
 4.Accéder à plein de ressources supplémentaires<br><br>
  </p>
-  <textarea type="text" id="mdp" oninput="this.value = this.value.toUpperCase()"  placeholder="Entrez la phrase sans ponctuation ni accents"></textarea>
+  <textarea type="text" id="mdp" oninput="nettoyerTexte(this)"  placeholder="Entrez la phrase sans ponctuation ni accents"></textarea>
   <br>
   <button onclick="verifier()">Entrer</button>
   <p id="erreur"></p>
@@ -78,6 +78,7 @@ Entrez votre nom et générez le !<br>
 <div id="footer"></div>
 
 <script src="scripts/script15.js"></script>
+<script src="scripts/script14.js"></script>
 <script src="scripts/script12.js"></script>
 <script src="script2.js"></script>
 <script src="script7.js"></script>
