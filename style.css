@@ -13,13 +13,12 @@
 
 /* Logo */
 #site-loader-logo {
-  width: 120px;
+  width: 300px;
+  height:auto;
   margin-bottom: 20px;
 }
-
-/* Nom du site */
 #site-loader-title {
-  font-size: 28px;
+  font-size: 150px;
   letter-spacing: 3px;
 }
 
