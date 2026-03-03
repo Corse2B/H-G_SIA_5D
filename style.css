@@ -13,7 +13,7 @@
 
 /* Logo */
 #site-loader-logo {
-  width: 250px;
+  width: 260px;
   height:auto;
   margin-bottom: 20px;
 }
@@ -269,7 +269,7 @@ transition: transform 0.3s ease;
   position: fixed;
   left:10px;
   top: 8px;
-  width: 150px;
+  width: 190px;
   height: auto;
   z-index:2000;
   }
@@ -277,7 +277,7 @@ transition: transform 0.3s ease;
   position: fixed;
   right:10px;
   top:8px;
-  width: 160px;
+  width: 190px;
   height: auto;
   z-index:2000;
   }
