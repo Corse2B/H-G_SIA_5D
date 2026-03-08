@@ -1,80 +1,33 @@
-const chat = document.getElementById("chat");
+const input = document.getElementById("question");
+const button = document.getElementById("send");
+const messages = document.getElementById("messages");
 
-function addMessage(text, type){
+button.onclick = async () => {
 
-  const div = document.createElement("div");
-  div.className = "message " + type;
-  div.innerText = text;
+  const question = input.value;
 
-  chat.appendChild(div);
-  chat.scrollTop = chat.scrollHeight;
+  if (!question) return;
 
-}
+  // afficher la question
+  messages.innerHTML += "<p><strong>Toi :</strong> " + question + "</p>";
 
-// effet écriture progressive
-function typeWriter(text, element, speed = 15){
-
-  let i = 0;
-
-  function typing(){
-
-    if(i < text.length){
-
-      element.innerHTML += text.charAt(i);
-      i++;
-
-      chat.scrollTop = chat.scrollHeight;
-
-      setTimeout(typing, speed);
-
-    }
-
-  }
-
-  typing();
-
-}
-
-async function send(){
-
-  const input = document.getElementById("message");
-  const text = input.value;
-
-  if(!text) return;
-
-  addMessage(text,"user");
-
-  input.value="";
-
-  const thinking = document.createElement("div");
-  thinking.className="message ai";
-  thinking.innerText="🤔 Réflexion...";
-
-  chat.appendChild(thinking);
-
-  const res = await fetch("https://chronographia-ai.tsilvain.workers.dev",{
-    method:"POST",
-    headers:{
-      "Content-Type":"application/json"
+  // requête vers ton worker cloudflare
+  const res = await fetch("https://chronographia-ai.tsilvain.workers.dev", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
     },
-    body:JSON.stringify({message:text})
+    body: JSON.stringify({
+      message: question
+    })
   });
 
   const data = await res.json();
 
-  thinking.innerText="";
+  // afficher la réponse IA
+  messages.innerHTML += "<p><strong>IA :</strong> " + data.response + "</p>";
 
-  typeWriter(data.reply,thinking);
-
-}
-
-// envoyer avec Entrée
-document.getElementById("message").addEventListener("keypress",function(e){
-
-  if(e.key === "Enter"){
-    send();
-  }
-
-});
+  input.value = "";
+};
 
 
