@@ -1,3 +1,4 @@
+
 const chat = document.getElementById("chat");
 const input = document.getElementById("message");
 const button = document.getElementById("sendBtn");
@@ -5,11 +6,11 @@ const button = document.getElementById("sendBtn");
 let waiting = false;
 
 // ajouter message
-function addMessage(text, type){
+function addMessage(text,type){
 
   const div = document.createElement("div");
   div.className = "message " + type;
-  div.innerText = text;
+  div.textContent = text;
 
   chat.appendChild(div);
   chat.scrollTop = chat.scrollHeight;
@@ -18,32 +19,25 @@ function addMessage(text, type){
 
 }
 
-// effet écriture
-function typeWriter(text, element, speed = 15){
+// écriture progressive
+function typeWriter(text,element){
 
   let i = 0;
 
-  function typing(){
+  function write(){
 
     if(i < text.length){
-
-      element.innerHTML += text.charAt(i);
+      element.textContent += text[i];
       i++;
-
-      chat.scrollTop = chat.scrollHeight;
-
-      setTimeout(typing, speed);
-
-    } else {
-
+      setTimeout(write,15);
+    }else{
       waiting = false;
       button.disabled = false;
-
     }
 
   }
 
-  typing();
+  write();
 
 }
 
@@ -76,27 +70,26 @@ async function send(){
 
     const data = await res.json();
 
-    thinking.innerHTML="";
+    thinking.textContent = "";
 
     typeWriter(data.reply,thinking);
 
-  }catch(err){
+  }catch(e){
 
-    thinking.innerText="Erreur connexion IA";
-    waiting=false;
-    button.disabled=false;
+    thinking.textContent = "Erreur connexion IA";
+    waiting = false;
+    button.disabled = false;
 
   }
 
 }
 
-// enter pour envoyer
-input.addEventListener("keypress",function(e){
+// bouton envoyer
+button.addEventListener("click",send);
 
-  if(e.key === "Enter" && !waiting){
+// touche entrée
+input.addEventListener("keydown",function(e){
+  if(e.key === "Enter"){
     send();
   }
-
 });
-
-
