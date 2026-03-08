@@ -1,6 +1,11 @@
 const chat = document.getElementById("chat");
+const input = document.getElementById("message");
+const button = document.getElementById("sendBtn");
 
-function addMessage(text, type) {
+let waiting = false;
+
+// ajouter message
+function addMessage(text, type){
 
   const div = document.createElement("div");
   div.className = "message " + type;
@@ -13,14 +18,14 @@ function addMessage(text, type) {
 
 }
 
-// effet écriture progressive
-function typeWriter(text, element, speed = 15) {
+// effet écriture
+function typeWriter(text, element, speed = 15){
 
   let i = 0;
 
-  function typing() {
+  function typing(){
 
-    if (i < text.length) {
+    if(i < text.length){
 
       element.innerHTML += text.charAt(i);
       i++;
@@ -28,6 +33,11 @@ function typeWriter(text, element, speed = 15) {
       chat.scrollTop = chat.scrollHeight;
 
       setTimeout(typing, speed);
+
+    } else {
+
+      waiting = false;
+      button.disabled = false;
 
     }
 
@@ -37,52 +47,56 @@ function typeWriter(text, element, speed = 15) {
 
 }
 
-async function send() {
+// envoyer message
+async function send(){
 
-  const input = document.getElementById("message");
+  if(waiting) return;
+
   const text = input.value.trim();
+  if(!text) return;
 
-  if (!text) return;
-
-  // message utilisateur
-  addMessage(text, "user");
+  addMessage(text,"user");
 
   input.value = "";
 
-  // message IA "réflexion"
-  const thinking = addMessage("🤔 Réflexion...", "ai");
+  waiting = true;
+  button.disabled = true;
 
-  try {
+  const thinking = addMessage("🤔 Réflexion...","ai");
 
-    const res = await fetch("https://chronographia-ai.tsilvain.workers.dev", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
+  try{
+
+    const res = await fetch("https://chronographia-ai.tsilvain.workers.dev",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
       },
-      body: JSON.stringify({ message: text })
+      body:JSON.stringify({message:text})
     });
 
     const data = await res.json();
 
-    // efface "réflexion"
-    thinking.innerHTML = "";
+    thinking.innerHTML="";
 
-    // écrit la réponse progressivement
-    typeWriter(data.reply, thinking);
+    typeWriter(data.reply,thinking);
 
-  } catch (err) {
+  }catch(err){
 
-    thinking.innerText = "Erreur de connexion à l'IA.";
+    thinking.innerText="Erreur connexion IA";
+    waiting=false;
+    button.disabled=false;
 
   }
 
 }
 
-// envoyer avec Entrée
-document.getElementById("message").addEventListener("keypress", function(e) {
+// enter pour envoyer
+input.addEventListener("keypress",function(e){
 
-  if (e.key === "Enter") {
+  if(e.key === "Enter" && !waiting){
     send();
   }
 
 });
+
+
