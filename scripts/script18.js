@@ -1,28 +1,88 @@
-async function send(){
+const chat = document.getElementById("chat");
 
-  const input = document.getElementById("msg");
-  const message = input.value;
+function addMessage(text, type) {
 
-  const response = await fetch(
-    "https://chronographia-ai.tsilvain.workers.dev",
-    {
+  const div = document.createElement("div");
+  div.className = "message " + type;
+  div.innerText = text;
+
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+
+  return div;
+
+}
+
+// effet écriture progressive
+function typeWriter(text, element, speed = 15) {
+
+  let i = 0;
+
+  function typing() {
+
+    if (i < text.length) {
+
+      element.innerHTML += text.charAt(i);
+      i++;
+
+      chat.scrollTop = chat.scrollHeight;
+
+      setTimeout(typing, speed);
+
+    }
+
+  }
+
+  typing();
+
+}
+
+async function send() {
+
+  const input = document.getElementById("message");
+  const text = input.value.trim();
+
+  if (!text) return;
+
+  // message utilisateur
+  addMessage(text, "user");
+
+  input.value = "";
+
+  // message IA "réflexion"
+  const thinking = addMessage("🤔 Réflexion...", "ai");
+
+  try {
+
+    const res = await fetch("https://chronographia-ai.tsilvain.workers.dev", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({
-        message: message
-      })
-    }
-  );
+      body: JSON.stringify({ message: text })
+    });
 
-  const data = await response.json();
+    const data = await res.json();
 
-  const chat = document.getElementById("chat");
+    // efface "réflexion"
+    thinking.innerHTML = "";
 
-  chat.innerHTML += "<p><b>Toi :</b> " + message + "</p>";
-  chat.innerHTML += "<p><b>IA :</b> " + data.reply + "</p>";
+    // écrit la réponse progressivement
+    typeWriter(data.reply, thinking);
 
-  input.value = "";
+  } catch (err) {
+
+    thinking.innerText = "Erreur de connexion à l'IA.";
+
+  }
 
 }
+
+// envoyer avec Entrée
+document.getElementById("message").addEventListener("keypress", function(e) {
+
+  if (e.key === "Enter") {
+    send();
+  }
+
+});
