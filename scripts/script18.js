@@ -2,37 +2,19 @@ const input = document.getElementById("question");
 const button = document.getElementById("send");
 const messages = document.getElementById("messages");
 
-function typeWriter(element, text, speed = 15) {
-  let i = 0;
-
-  function type() {
-    if (i < text.length) {
-      element.innerHTML += text.charAt(i);
-      i++;
-      setTimeout(type, speed);
-    }
-  }
-
-  type();
-}
-
-function addMessage(author, text, animate=false) {
+function addMessage(author) {
 
   const p = document.createElement("p");
-  p.innerHTML = "<b>" + author + " :</b> ";
+
+  const bold = document.createElement("b");
+  bold.textContent = author + " : ";
 
   const span = document.createElement("span");
+
+  p.appendChild(bold);
   p.appendChild(span);
 
   messages.appendChild(p);
-
-  if (animate) {
-    typeWriter(span, text);
-  } else {
-    span.textContent = text;
-  }
-
-  messages.scrollTop = messages.scrollHeight;
 
   return span;
 }
@@ -44,9 +26,10 @@ async function sendMessage() {
 
   button.disabled = true;
 
-  addMessage("Toi", question);
+  const user = addMessage("Toi");
+  user.textContent = question;
 
-  const thinking = addMessage("Chronographia-AI", "⏳ réfléchit...");
+  const ai = addMessage("Chronographia-AI");
 
   const res = await fetch("https://chronographia-ai.tsilvain.workers.dev", {
     method: "POST",
@@ -56,14 +39,48 @@ async function sendMessage() {
     body: JSON.stringify({ message: question })
   });
 
-  const data = await res.json();
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
 
-  thinking.textContent = "";
+  let fullText = "";
 
-  typeWriter(thinking, data.response);
+  while (true) {
 
-  input.value = "";
+    const { done, value } = await reader.read();
+
+    if (done) break;
+
+    const chunk = decoder.decode(value);
+
+    const lines = chunk.split("\n");
+
+    for (const line of lines) {
+
+      if (line.startsWith("data:")) {
+
+        const json = line.replace("data:", "").trim();
+
+        if (json === "[DONE]") return;
+
+        try {
+
+          const parsed = JSON.parse(json);
+
+          if (parsed.response) {
+            fullText += parsed.response;
+            ai.textContent = fullText;
+          }
+
+        } catch {}
+
+      }
+
+    }
+
+  }
+
   button.disabled = false;
+  input.value = "";
 }
 
 button.onclick = sendMessage;
