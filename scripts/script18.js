@@ -2,32 +2,39 @@ const input = document.getElementById("question");
 const button = document.getElementById("send");
 const messages = document.getElementById("messages");
 
-function parseMarkdown(text) {
+function typeWriter(element, text, speed = 15) {
+  let i = 0;
 
-  return text
-    .replace(/```([\s\S]*?)```/g, "<pre><code>$1</code></pre>")
-    .replace(/`([^`]+)`/g, "<code>$1</code>")
-    .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-    .replace(/\*(.*?)\*/g, "<em>$1</em>")
-    .replace(/\n/g, "<br>");
+  function type() {
+    if (i < text.length) {
+      element.innerHTML += text.charAt(i);
+      i++;
+      setTimeout(type, speed);
+    }
+  }
+
+  type();
 }
 
-function addMessage(author, text) {
+function addMessage(author, text, animate=false) {
 
   const p = document.createElement("p");
-
-  const bold = document.createElement("b");
-  bold.textContent = author + " : ";
+  p.innerHTML = "<b>" + author + " :</b> ";
 
   const span = document.createElement("span");
-
-  // transformation markdown
-  span.innerHTML = parseMarkdown(text);
-
-  p.appendChild(bold);
   p.appendChild(span);
 
   messages.appendChild(p);
+
+  if (animate) {
+    typeWriter(span, text);
+  } else {
+    span.textContent = text;
+  }
+
+  messages.scrollTop = messages.scrollHeight;
+
+  return span;
 }
 
 async function sendMessage() {
@@ -39,6 +46,8 @@ async function sendMessage() {
 
   addMessage("Toi", question);
 
+  const thinking = addMessage("Chronographia-AI", "⏳ réfléchit...");
+
   const res = await fetch("https://chronographia-ai.tsilvain.workers.dev", {
     method: "POST",
     headers: {
@@ -49,7 +58,9 @@ async function sendMessage() {
 
   const data = await res.json();
 
-  addMessage("Chronographia-AI", data.response);
+  thinking.textContent = "";
+
+  typeWriter(thinking, data.response);
 
   input.value = "";
   button.disabled = false;
