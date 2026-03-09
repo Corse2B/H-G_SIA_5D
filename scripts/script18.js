@@ -2,6 +2,10 @@ const input = document.getElementById("question");
 const button = document.getElementById("send");
 const messages = document.getElementById("messages");
 
+function scrollBottom() {
+  messages.scrollTop = messages.scrollHeight;
+}
+
 function addMessage(author) {
 
   const p = document.createElement("p");
@@ -16,6 +20,8 @@ function addMessage(author) {
 
   messages.appendChild(p);
 
+  scrollBottom();
+
   return span;
 }
 
@@ -26,10 +32,13 @@ async function sendMessage() {
 
   button.disabled = true;
 
-  const user = addMessage("Vous");
+  // message utilisateur
+  const user = addMessage("Toi");
   user.textContent = question;
 
+  // message IA
   const ai = addMessage("Chronograph-IA");
+  ai.innerHTML = "⏳ réfléchit...";
 
   const res = await fetch("https://chronographia-ai.tsilvain.workers.dev", {
     method: "POST",
@@ -43,6 +52,8 @@ async function sendMessage() {
   const decoder = new TextDecoder();
 
   let fullText = "";
+
+  ai.innerHTML = "";
 
   while (true) {
 
@@ -60,15 +71,20 @@ async function sendMessage() {
 
         const json = line.replace("data:", "").trim();
 
-        if (json === "[DONE]") return;
+        if (json === "[DONE]") break;
 
         try {
 
           const parsed = JSON.parse(json);
 
           if (parsed.response) {
+
             fullText += parsed.response;
-            ai.textContent = fullText;
+
+            ai.innerHTML = marked.parse(fullText);
+
+            scrollBottom();
+
           }
 
         } catch {}
