@@ -26,10 +26,10 @@ async function sendMessage() {
 
   button.disabled = true;
 
-  const user = addMessage("Toi");
+  const user = addMessage("Vous");
   user.textContent = question;
 
-  const ai = addMessage("Chronographia-AI");
+  const ai = addMessage("Chronograph-IA");
 
   const res = await fetch("https://chronographia-ai.tsilvain.workers.dev", {
     method: "POST",
