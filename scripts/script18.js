@@ -37,12 +37,12 @@ async function sendMessage() {
   button.disabled = true;
 
   // message utilisateur
-  const user = addMessage("Toi");
+  const user = addMessage("Vous");
   user.textContent = question;
 
   // message IA
   const ai = addMessage("Chronograph-IA");
-  ai.innerHTML = "⏳ réfléchit...";
+  ai.innerHTML = "Reflexion";
 
   const res = await fetch("https://chronographia-ai.tsilvain.workers.dev", {
     method: "POST",
