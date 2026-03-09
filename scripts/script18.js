@@ -30,6 +30,10 @@ async function sendMessage() {
   const question = input.value.trim();
   if (!question) return;
 
+  // vider le champ immédiatement
+  input.value = "";
+  input.focus();
+
   button.disabled = true;
 
   // message utilisateur
@@ -96,11 +100,13 @@ async function sendMessage() {
   }
 
   button.disabled = false;
-  input.value = "";
 }
 
 button.onclick = sendMessage;
 
 input.addEventListener("keypress", e => {
-  if (e.key === "Enter") sendMessage();
+  if (e.key === "Enter") {
+    e.preventDefault();
+    sendMessage();
+  }
 });
