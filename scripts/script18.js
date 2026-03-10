@@ -1,12 +1,13 @@
-console.log("chat chargé");
-
-window.addEventListener("DOMContentLoaded", () => {
-
 const input = document.getElementById("question");
 const button = document.getElementById("send");
 const messages = document.getElementById("messages");
 
-let lastQuestion = "";
+let history = [
+{
+role: "system",
+content: "Tu es Chronograph-IA, professeur d'histoire clair et pédagogique."
+}
+];
 
 function scrollBottom() {
   messages.scrollTop = messages.scrollHeight;
@@ -31,72 +32,61 @@ function addMessage(author) {
   return span;
 }
 
-async function askAI(question, aiElement, append=false) {
+async function askAI(span) {
 
-  try {
+  const res = await fetch("https://chronographia-ai.tsilvain.workers.dev", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ messages: history })
+  });
 
-    const res = await fetch("https://chronographia-ai.tsilvain.workers.dev", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ message: question })
-    });
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
 
-    const reader = res.body.getReader();
-    const decoder = new TextDecoder();
+  let fullText = "";
 
-    let text = append ? aiElement.textContent : "";
+  while (true) {
 
-    while (true) {
+    const { done, value } = await reader.read();
 
-      const { done, value } = await reader.read();
-      if (done) break;
+    if (done) break;
 
-      const chunk = decoder.decode(value);
-      const lines = chunk.split("\n");
+    const chunk = decoder.decode(value);
 
-      for (const line of lines) {
+    const lines = chunk.split("\n");
 
-        if (!line.startsWith("data:")) continue;
+    for (const line of lines) {
 
-        const json = line.replace("data:", "").trim();
+      if (!line.startsWith("data:")) continue;
 
-        if (json === "[DONE]") continue;
+      const data = line.replace("data:", "").trim();
 
-        try {
-
-          const parsed = JSON.parse(json);
-
-          if (parsed.response) {
-
-            text += parsed.response;
-
-            if (window.marked) {
-              aiElement.innerHTML = marked.parse(text);
-            } else {
-              aiElement.textContent = text;
-            }
-
-            scrollBottom();
-
-          }
-
-        } catch {}
-
+      if (data === "[DONE]") {
+        return fullText;
       }
+
+      try {
+
+        const parsed = JSON.parse(data);
+
+        if (parsed.response) {
+
+          fullText += parsed.response;
+
+          span.innerHTML = marked.parse(fullText);
+
+          scrollBottom();
+        }
+
+      } catch {}
 
     }
 
-    return text;
-
-  } catch (err) {
-
-    aiElement.textContent = "Erreur : " + err;
-    return "";
-
   }
 
+  return fullText;
 }
 
 async function sendMessage() {
@@ -107,36 +97,35 @@ async function sendMessage() {
   input.value = "";
   input.focus();
 
-  lastQuestion = question;
+  button.disabled = true;
 
   const user = addMessage("Vous");
   user.textContent = question;
 
+  history.push({
+    role: "user",
+    content: question
+  });
+
   const ai = addMessage("Chronograph-IA");
-  ai.textContent = "Réflexion...";
+  ai.innerHTML = "Réflexion...";
 
-  button.disabled = true;
+  const text = await askAI(ai);
 
-  let text = await askAI(question, ai);
-
-  // Vérifie si la réponse est coupée
-  if (!text.trim().match(/[.!?]$/)) {
-
-    text = await askAI("continue", ai, true);
-
-  }
+  history.push({
+    role: "assistant",
+    content: text
+  });
 
   button.disabled = false;
 
 }
 
-button.addEventListener("click", sendMessage);
+button.onclick = sendMessage;
 
 input.addEventListener("keypress", e => {
   if (e.key === "Enter") {
     e.preventDefault();
     sendMessage();
   }
-});
-
 });
