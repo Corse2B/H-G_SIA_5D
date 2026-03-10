@@ -2,25 +2,27 @@ const sendBtn = document.getElementById("send");
 const textarea = document.getElementById("question");
 const messages = document.getElementById("messages");
 
-sendBtn.onclick = async () => {
+async function sendMessage(){
 
   const question = textarea.value.trim();
   if (!question) return;
 
   const user = document.createElement("div");
-  user.textContent = "Vous : " + question;
+  user.innerHTML = "<b>Vous :</b> " + question;
   messages.appendChild(user);
 
   const ai = document.createElement("div");
-  ai.textContent = "Chronograph-IA : ";
+  ai.innerHTML = "<b>Chronograph-IA :</b> ";
   messages.appendChild(ai);
 
   textarea.value = "";
 
+  let fullText = "";
+
   const response = await fetch("https://chronograph-ia.tsilvain.workers.dev", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
+    method:"POST",
+    headers:{
+      "Content-Type":"application/json"
     },
     body: JSON.stringify({
       message: question
@@ -30,23 +32,23 @@ sendBtn.onclick = async () => {
   const reader = response.body.getReader();
   const decoder = new TextDecoder();
 
-  while (true) {
+  while(true){
 
-    const { done, value } = await reader.read();
-    if (done) break;
+    const {done,value} = await reader.read();
+    if(done) break;
 
     const chunk = decoder.decode(value);
     const lines = chunk.split("\n");
 
-    for (const line of lines) {
+    for(const line of lines){
 
-      if (!line.startsWith("data:")) continue;
+      if(!line.startsWith("data:")) continue;
 
-      const data = line.replace("data:", "").trim();
+      const data = line.replace("data:","").trim();
 
-      if (data === "[DONE]") return;
+      if(data === "[DONE]") return;
 
-      try {
+      try{
 
         const json = JSON.parse(data);
 
@@ -56,12 +58,31 @@ sendBtn.onclick = async () => {
           json.delta?.content ||
           "";
 
-        if (token) {
-          ai.textContent += token;
+        if(token){
+          fullText += token;
+
+          ai.innerHTML =
+            "<b>Chronograph-IA :</b><br>" +
+            marked.parse(fullText);
+
+          messages.scrollTop = messages.scrollHeight;
         }
 
-      } catch {}
+      }catch{}
 
     }
+
   }
-};
+
+}
+
+sendBtn.onclick = sendMessage;
+
+textarea.addEventListener("keydown", e => {
+
+  if(e.ctrlKey && e.shiftKey && e.key === "Enter"){
+    e.preventDefault();
+    sendMessage();
+  }
+
+});
