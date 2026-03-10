@@ -1,3 +1,34 @@
+console.log("chat chargé");
+
+window.addEventListener("DOMContentLoaded", () => {
+
+const input = document.getElementById("question");
+const button = document.getElementById("send");
+const messages = document.getElementById("messages");
+
+function scrollBottom() {
+  messages.scrollTop = messages.scrollHeight;
+}
+
+function addMessage(author) {
+
+  const p = document.createElement("p");
+
+  const bold = document.createElement("b");
+  bold.textContent = author + " : ";
+
+  const span = document.createElement("span");
+
+  p.appendChild(bold);
+  p.appendChild(span);
+
+  messages.appendChild(p);
+
+  scrollBottom();
+
+  return span;
+}
+
 async function sendMessage() {
 
   const question = input.value.trim();
@@ -6,13 +37,13 @@ async function sendMessage() {
   input.value = "";
   input.focus();
 
-  button.disabled = true;
-
   const user = addMessage("Vous");
   user.textContent = question;
 
   const ai = addMessage("Chronograph-IA");
-  ai.innerHTML = "Réflexion...";
+  ai.textContent = "Réflexion...";
+
+  button.disabled = true;
 
   try {
 
@@ -24,18 +55,12 @@ async function sendMessage() {
       body: JSON.stringify({ message: question })
     });
 
-    if (!res.ok) {
-      ai.textContent = "Erreur serveur";
-      button.disabled = false;
-      return;
-    }
-
     const reader = res.body.getReader();
     const decoder = new TextDecoder();
 
     let text = "";
 
-    ai.innerHTML = "";
+    ai.textContent = "";
 
     while (true) {
 
@@ -43,13 +68,39 @@ async function sendMessage() {
 
       if (done) break;
 
-      const chunk = decoder.decode(value, { stream: true });
+      const chunk = decoder.decode(value);
 
-      text += chunk;
+      const lines = chunk.split("\n");
 
-      ai.innerHTML = marked.parse(text);
+      for (const line of lines) {
 
-      scrollBottom();
+        if (!line.startsWith("data:")) continue;
+
+        const json = line.replace("data:", "").trim();
+
+        if (json === "[DONE]") continue;
+
+        try {
+
+          const parsed = JSON.parse(json);
+
+          if (parsed.response) {
+
+            text += parsed.response;
+
+            if (window.marked) {
+              ai.innerHTML = marked.parse(text);
+            } else {
+              ai.textContent = text;
+            }
+
+            scrollBottom();
+
+          }
+
+        } catch {}
+
+      }
 
     }
 
@@ -62,3 +113,14 @@ async function sendMessage() {
   button.disabled = false;
 
 }
+
+button.addEventListener("click", sendMessage);
+
+input.addEventListener("keypress", e => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    sendMessage();
+  }
+});
+
+});
