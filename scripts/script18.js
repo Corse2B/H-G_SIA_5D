@@ -7,75 +7,58 @@ sendBtn.onclick = async () => {
   const question = textarea.value.trim();
   if (!question) return;
 
-  // message utilisateur
   const user = document.createElement("div");
   user.textContent = "Vous : " + question;
   messages.appendChild(user);
 
-  // message IA
   const ai = document.createElement("div");
   ai.textContent = "Chronograph-IA : ";
   messages.appendChild(ai);
 
   textarea.value = "";
 
-  try {
+  const response = await fetch("https://TON-WORKER.workers.dev", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      message: question
+    })
+  });
 
-    const response = await fetch("https://chronograph-ia.tsilvain.workers.dev", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        message: question
-      })
-    });
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
 
-    const reader = response.body.getReader();
-    const decoder = new TextDecoder();
+  while (true) {
 
-    let buffer = "";
+    const { done, value } = await reader.read();
+    if (done) break;
 
-    while (true) {
+    const chunk = decoder.decode(value);
 
-      const { done, value } = await reader.read();
-      if (done) break;
+    const lines = chunk.split("\n");
 
-      buffer += decoder.decode(value, { stream: true });
+    for (const line of lines) {
 
-      const lines = buffer.split("\n");
-      buffer = lines.pop();
+      if (!line.startsWith("data:")) continue;
 
-      for (const line of lines) {
+      const data = line.replace("data:", "").trim();
 
-        if (line.startsWith("data:")) {
+      if (data === "[DONE]") return;
 
-          const json = line.replace("data:", "").trim();
+      try {
 
-          if (json === "[DONE]") return;
+        const json = JSON.parse(data);
 
-          try {
-
-            const parsed = JSON.parse(json);
-
-            const token =
-              parsed.response ||
-              parsed.delta ||
-              parsed.choices?.[0]?.delta?.content;
-
-            if (token) {
-              ai.textContent += token;
-              messages.scrollTop = messages.scrollHeight;
-            }
-
-          } catch {}
+        // Cloudflare AI streaming
+        if (json.response) {
+          ai.textContent += json.response;
         }
-      }
+
+      } catch (e) {}
+
     }
-
-  } catch (err) {
-
-    ai.textContent = "Erreur : " + err.message;
 
   }
 
