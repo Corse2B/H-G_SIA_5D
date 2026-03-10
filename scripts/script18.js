@@ -1,111 +1,45 @@
-const input = document.getElementById("question");
-const button = document.getElementById("send");
-const messages = document.getElementById("messages");
+const reader = res.body.getReader();
+const decoder = new TextDecoder();
 
-function scrollBottom() {
-  messages.scrollTop = messages.scrollHeight;
-}
+let buffer = "";
+let text = "";
 
-function addMessage(author) {
+ai.innerHTML = "";
 
-  const p = document.createElement("p");
+while (true) {
 
-  const bold = document.createElement("b");
-  bold.textContent = author + " : ";
+  const { done, value } = await reader.read();
+  if (done) break;
 
-  const span = document.createElement("span");
+  buffer += decoder.decode(value, { stream: true });
 
-  p.appendChild(bold);
-  p.appendChild(span);
+  const lines = buffer.split("\n");
+  buffer = lines.pop();
 
-  messages.appendChild(p);
+  for (const line of lines) {
 
-  scrollBottom();
+    if (!line.startsWith("data:")) continue;
 
-  return span;
-}
+    const json = line.replace("data:", "").trim();
 
-async function sendMessage() {
+    if (json === "[DONE]") break;
 
-  const question = input.value.trim();
-  if (!question) return;
+    try {
 
-  input.value = "";
-  input.focus();
+      const parsed = JSON.parse(json);
 
-  button.disabled = true;
+      if (parsed.response) {
 
-  const user = addMessage("Vous");
-  user.textContent = question;
+        text += parsed.response;
 
-  const ai = addMessage("Chronograph-IA");
-  ai.innerHTML = "Réflexion...";
+        ai.innerHTML = marked.parse(text);
 
-  const res = await fetch(
-    "https://chronograph-ia.tsilvain.workers.dev",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ message: question }),
-      keepalive: true
-    }
-  );
+        scrollBottom();
 
-  const reader = res.body.getReader();
-  const decoder = new TextDecoder();
+      }
 
-  let text = "";
-
-  ai.innerHTML = "";
-
-  while (true) {
-
-    const { done, value } = await reader.read();
-
-    if (done) break;
-
-    const chunk = decoder.decode(value);
-
-    const lines = chunk.split("\n");
-
-    for (const line of lines) {
-
-      if (!line.startsWith("data:")) continue;
-
-      const json = line.replace("data:", "").trim();
-
-      if (json === "[DONE]") break;
-
-      try {
-
-        const parsed = JSON.parse(json);
-
-        if (parsed.response) {
-
-          text += parsed.response;
-
-          ai.innerHTML = marked.parse(text);
-
-          scrollBottom();
-
-        }
-
-      } catch {}
-
-    }
+    } catch {}
 
   }
 
-  button.disabled = false;
 }
-
-button.onclick = sendMessage;
-
-input.addEventListener("keypress", e => {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    sendMessage();
-  }
-});
