@@ -12,60 +12,50 @@ async function sendMessage() {
   user.textContent = question;
 
   const ai = addMessage("Chronograph-IA");
-  ai.innerHTML = "Reflexion...";
+  ai.innerHTML = "Réflexion...";
 
-  const res = await fetch("https://chronographia-ai.tsilvain.workers.dev", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ message: question })
-  });
+  try {
 
-  const reader = res.body.getReader();
-  const decoder = new TextDecoder();
+    const res = await fetch("https://chronographia-ai.tsilvain.workers.dev", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ message: question })
+    });
 
-  let text = "";
+    if (!res.ok) {
+      ai.textContent = "Erreur serveur";
+      button.disabled = false;
+      return;
+    }
 
-  ai.innerHTML = "";
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
 
-  while (true) {
+    let text = "";
 
-    const { done, value } = await reader.read();
-    if (done) break;
+    ai.innerHTML = "";
 
-    const chunk = decoder.decode(value);
+    while (true) {
 
-    const lines = chunk.split("\n");
+      const { done, value } = await reader.read();
 
-    for (const line of lines) {
+      if (done) break;
 
-      if (!line.startsWith("data:")) continue;
+      const chunk = decoder.decode(value, { stream: true });
 
-      const data = line.replace("data:", "").trim();
+      text += chunk;
 
-      if (data === "[DONE]") {
-        button.disabled = false;
-        return;
-      }
+      ai.innerHTML = marked.parse(text);
 
-      try {
-
-        const json = JSON.parse(data);
-
-        if (json.response) {
-
-          text += json.response;
-
-          ai.innerHTML = marked.parse(text);
-
-          scrollBottom();
-
-        }
-
-      } catch {}
+      scrollBottom();
 
     }
+
+  } catch (err) {
+
+    ai.textContent = "Erreur : " + err;
 
   }
 
