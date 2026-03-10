@@ -2,20 +2,20 @@ const input = document.getElementById("question");
 const button = document.getElementById("send");
 const messages = document.getElementById("messages");
 
-function scrollBottom(){
+function scrollBottom() {
   messages.scrollTop = messages.scrollHeight;
 }
 
-function addMessage(author){
+function addMessage(author) {
 
   const p = document.createElement("p");
 
-  const b = document.createElement("b");
-  b.textContent = author + " : ";
+  const bold = document.createElement("b");
+  bold.textContent = author + " : ";
 
   const span = document.createElement("span");
 
-  p.appendChild(b);
+  p.appendChild(bold);
   p.appendChild(span);
 
   messages.appendChild(p);
@@ -25,12 +25,13 @@ function addMessage(author){
   return span;
 }
 
-async function sendMessage(){
+async function sendMessage() {
 
   const question = input.value.trim();
-  if(!question) return;
+  if (!question) return;
 
   input.value = "";
+  input.focus();
 
   button.disabled = true;
 
@@ -43,41 +44,45 @@ async function sendMessage(){
   const res = await fetch(
     "https://chronographia-ai.tsilvain.workers.dev",
     {
-      method:"POST",
-      headers:{ "Content-Type":"application/json" },
-      body: JSON.stringify({ message: question })
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ message: question }),
+      keepalive: true
     }
   );
 
   const reader = res.body.getReader();
   const decoder = new TextDecoder();
 
-  ai.innerHTML = "";
-
   let text = "";
 
-  while(true){
+  ai.innerHTML = "";
 
-    const {done,value} = await reader.read();
-    if(done) break;
+  while (true) {
+
+    const { done, value } = await reader.read();
+
+    if (done) break;
 
     const chunk = decoder.decode(value);
 
     const lines = chunk.split("\n");
 
-    for(const line of lines){
+    for (const line of lines) {
 
-      if(!line.startsWith("data:")) continue;
+      if (!line.startsWith("data:")) continue;
 
-      const json = line.replace("data:","").trim();
+      const json = line.replace("data:", "").trim();
 
-      if(json === "[DONE]") break;
+      if (json === "[DONE]") break;
 
-      try{
+      try {
 
         const parsed = JSON.parse(json);
 
-        if(parsed.response){
+        if (parsed.response) {
 
           text += parsed.response;
 
@@ -87,20 +92,19 @@ async function sendMessage(){
 
         }
 
-      }catch{}
+      } catch {}
 
     }
 
   }
 
   button.disabled = false;
-
 }
 
 button.onclick = sendMessage;
 
-input.addEventListener("keypress", e=>{
-  if(e.key==="Enter"){
+input.addEventListener("keypress", e => {
+  if (e.key === "Enter") {
     e.preventDefault();
     sendMessage();
   }
