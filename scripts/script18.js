@@ -1,18 +1,18 @@
-const button = document.getElementById("send");
-const textarea = document.getElementById("question");
+const send = document.getElementById("send");
+const question = document.getElementById("question");
 const messages = document.getElementById("messages");
 
-button.onclick = async () => {
+send.onclick = async () => {
 
-  const question = textarea.value;
+  const text = question.value;
 
-  const userMsg = document.createElement("div");
-  userMsg.textContent = "👤 " + question;
-  messages.appendChild(userMsg);
+  const user = document.createElement("div");
+  user.textContent = "👤 " + text;
+  messages.appendChild(user);
 
-  const aiMsg = document.createElement("div");
-  aiMsg.textContent = "🤖 ";
-  messages.appendChild(aiMsg);
+  const ai = document.createElement("div");
+  ai.textContent = "🤖 ";
+  messages.appendChild(ai);
 
   const response = await fetch("https://chronograph-ia.tsilvain.workers.dev", {
     method: "POST",
@@ -20,43 +20,26 @@ button.onclick = async () => {
       "Content-Type": "application/json"
     },
     body: JSON.stringify({
-      message: question
+      message: text
     })
   });
 
-  const reader = response.body.getReader();
-  const decoder = new TextDecoder();
+  const data = await response.json();
 
-  while (true) {
+  const reply = data.reply;
 
-    const { value, done } = await reader.read();
+  // effet streaming fake
+  let i = 0;
 
-    if (done) break;
+  const interval = setInterval(() => {
 
-    const chunk = decoder.decode(value);
+    ai.textContent += reply[i];
 
-    const lines = chunk.split("\n");
+    i++;
 
-    for (const line of lines) {
-
-      if (line.startsWith("data:")) {
-
-        const data = line.replace("data:", "").trim();
-
-        if (data === "[DONE]") return;
-
-        try {
-
-          const json = JSON.parse(data);
-
-          const token = json.choices[0].delta?.content;
-
-          if (token) {
-            aiMsg.textContent += token;
-          }
-
-        } catch {}
-      }
+    if (i >= reply.length) {
+      clearInterval(interval);
     }
-  }
+
+  }, 20);
 };
