@@ -1,3 +1,18 @@
+#messages h1,#messages h2,#messages h3{
+margin-top:10px;
+}
+
+#messages code{
+background:#111;
+padding:3px 6px;
+border-radius:4px;
+}
+
+#messages pre{
+background:#111;
+padding:10px;
+overflow:auto;
+}
 #question{
 position: fixed;
 bottom: 30px;
