@@ -1,12 +1,12 @@
 #question{
 position: fixed;
-bottom: 10;
+bottom: 10px;
 left: 50%;
 z-index: 1000;
 }
 #send{
 position: fixed;
-bottom: 5;
+bottom: 5px;
 left: 50%;
  z-index: 1000;
 }
