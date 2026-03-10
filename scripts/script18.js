@@ -2,13 +2,6 @@ const input = document.getElementById("question");
 const button = document.getElementById("send");
 const messages = document.getElementById("messages");
 
-let history = [
-{
-role: "system",
-content: "Tu es Chronograph-IA, professeur d'histoire clair et pédagogique."
-}
-];
-
 function scrollBottom() {
   messages.scrollTop = messages.scrollHeight;
 }
@@ -32,20 +25,36 @@ function addMessage(author) {
   return span;
 }
 
-async function askAI(span) {
+async function sendMessage() {
+
+  const question = input.value.trim();
+  if (!question) return;
+
+  input.value = "";
+  input.focus();
+
+  button.disabled = true;
+
+  const user = addMessage("Vous");
+  user.textContent = question;
+
+  const ai = addMessage("Chronograph-IA");
+  ai.innerHTML = "Réflexion...";
 
   const res = await fetch("https://chronographia-ai.tsilvain.workers.dev", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ messages: history })
+    body: JSON.stringify({ message: question })
   });
 
   const reader = res.body.getReader();
   const decoder = new TextDecoder();
 
   let fullText = "";
+
+  ai.innerHTML = "";
 
   while (true) {
 
@@ -63,9 +72,7 @@ async function askAI(span) {
 
       const data = line.replace("data:", "").trim();
 
-      if (data === "[DONE]") {
-        return fullText;
-      }
+      if (data === "[DONE]") break;
 
       try {
 
@@ -75,9 +82,10 @@ async function askAI(span) {
 
           fullText += parsed.response;
 
-          span.innerHTML = marked.parse(fullText);
+          ai.innerHTML = marked.parse(fullText);
 
           scrollBottom();
+
         }
 
       } catch {}
@@ -85,37 +93,6 @@ async function askAI(span) {
     }
 
   }
-
-  return fullText;
-}
-
-async function sendMessage() {
-
-  const question = input.value.trim();
-  if (!question) return;
-
-  input.value = "";
-  input.focus();
-
-  button.disabled = true;
-
-  const user = addMessage("Vous");
-  user.textContent = question;
-
-  history.push({
-    role: "user",
-    content: question
-  });
-
-  const ai = addMessage("Chronograph-IA");
-  ai.innerHTML = "Réflexion...";
-
-  const text = await askAI(ai);
-
-  history.push({
-    role: "assistant",
-    content: text
-  });
 
   button.disabled = false;
 
