@@ -1,7 +1,6 @@
 #question{
-position:sticky;
-margin-bottom:10px;
-  z-index: 1000;
+position: fixed;
+bottom: 0;
 }
 #site-loader-screen {
   position: fixed;
