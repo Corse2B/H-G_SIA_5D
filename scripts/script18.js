@@ -2,12 +2,10 @@ const input = document.getElementById("question");
 const button = document.getElementById("send");
 const messagesContainer = document.getElementById("messages");
 
-// Scroll automatique vers le bas
 function scrollBottom() {
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
-// Crée un message dans le chat
 function addMessage(author) {
   const p = document.createElement("p");
   const bold = document.createElement("b");
@@ -20,7 +18,6 @@ function addMessage(author) {
   return span;
 }
 
-// Envoie le message à l'IA et lit le flux SSE
 async function sendMessage() {
   const question = input.value.trim();
   if (!question) return;
@@ -36,48 +33,22 @@ async function sendMessage() {
   aiSpan.textContent = "Réflexion...";
 
   try {
-    const res = await fetch("https://chronograph-ia.tsilvain.workers.dev", {
+    const res = await fetch("https://apifreellm.com/api/v1/chat", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ message: question }),
-      keepalive: true
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer apf_k9u4f2e1uefhre97lea5v6iu"
+      },
+      body: JSON.stringify({
+        prompt: question,
+        stream: false // ou true si l’API supporte streaming côté navigateur
+      })
     });
 
-    const reader = res.body.getReader();
-    const decoder = new TextDecoder();
-    let buffer = "";
-    let text = "";
-    aiSpan.textContent = "";
+    const data = await res.json();
 
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-
-      buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split("\n");
-      buffer = lines.pop(); // garde la dernière ligne incomplète
-
-      for (const line of lines) {
-        if (!line.startsWith("data:")) continue;
-        const json = line.replace("data:", "").trim();
-        if (json === "[DONE]") break;
-
-        try {
-          const parsed = JSON.parse(json);
-          if (parsed.response) {
-            text += parsed.response;
-            aiSpan.textContent = text; // mise à jour progressive
-            scrollBottom();
-          }
-          if (parsed.error) {
-            aiSpan.textContent = "Erreur : " + parsed.error;
-            scrollBottom();
-          }
-        } catch (e) {
-          console.error("Erreur parsing JSON SSE :", e);
-        }
-      }
-    }
+    // Si streaming = false, on récupère data.response directement
+    aiSpan.textContent = data.response || "Aucune réponse";
 
   } catch (err) {
     aiSpan.textContent = "Erreur : " + err.message;
@@ -86,7 +57,6 @@ async function sendMessage() {
   button.disabled = false;
 }
 
-// Gestion des événements
 button.onclick = sendMessage;
 input.addEventListener("keypress", e => {
   if (e.key === "Enter") {
