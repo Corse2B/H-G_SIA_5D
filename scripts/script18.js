@@ -37,7 +37,7 @@ async function sendMessage() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer apf_k9u4f2e1uefhre97lea5v6iu"
+        "Authorization": "Bearer "
       },
       body: JSON.stringify({
         prompt: question,
