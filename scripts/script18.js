@@ -7,7 +7,7 @@ function scrollBottom() {
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
-// Crée un nouveau message dans le chat
+// Crée un message dans le chat
 function addMessage(author) {
   const p = document.createElement("p");
   const bold = document.createElement("b");
@@ -20,7 +20,7 @@ function addMessage(author) {
   return span;
 }
 
-// Envoie le message à l'IA et récupère la réponse en streaming
+// Envoie le message à l'IA et lit le flux SSE
 async function sendMessage() {
   const question = input.value.trim();
   if (!question) return;
@@ -67,6 +67,10 @@ async function sendMessage() {
           if (parsed.response) {
             text += parsed.response;
             aiSpan.textContent = text; // mise à jour progressive
+            scrollBottom();
+          }
+          if (parsed.error) {
+            aiSpan.textContent = "Erreur : " + parsed.error;
             scrollBottom();
           }
         } catch (e) {
