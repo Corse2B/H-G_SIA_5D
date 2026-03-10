@@ -42,7 +42,7 @@ async function sendMessage() {
   ai.innerHTML = "Réflexion...";
 
   const res = await fetch(
-    "https://chronographia-ai.tsilvain.workers.dev",
+    "https://chronograph-ia.tsilvain.workers.dev",
     {
       method: "POST",
       headers: {
