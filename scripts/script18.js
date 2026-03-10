@@ -1,66 +1,62 @@
-const input = document.getElementById("question");
 const button = document.getElementById("send");
-const messagesContainer = document.getElementById("messages");
+const textarea = document.getElementById("question");
+const messages = document.getElementById("messages");
 
-function scrollBottom() {
-  messagesContainer.scrollTop = messagesContainer.scrollHeight;
-}
+button.onclick = async () => {
 
-function addMessage(author) {
-  const p = document.createElement("p");
-  const bold = document.createElement("b");
-  bold.textContent = author + " : ";
-  const span = document.createElement("span");
-  p.appendChild(bold);
-  p.appendChild(span);
-  messagesContainer.appendChild(p);
-  scrollBottom();
-  return span;
-}
+  const question = textarea.value;
 
-async function sendMessage() {
-  const question = input.value.trim();
-  if (!question) return;
+  const userMsg = document.createElement("div");
+  userMsg.textContent = "👤 " + question;
+  messages.appendChild(userMsg);
 
-  input.value = "";
-  input.focus();
-  button.disabled = true;
+  const aiMsg = document.createElement("div");
+  aiMsg.textContent = "🤖 ";
+  messages.appendChild(aiMsg);
 
-  const userSpan = addMessage("Vous");
-  userSpan.textContent = question;
+  const response = await fetch("https://chronograph-ia.tsilvain.workers.dev", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      message: question
+    })
+  });
 
-  const aiSpan = addMessage("Chronograph-IA");
-  aiSpan.textContent = "Réflexion...";
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
 
-  try {
-    const res = await fetch("https://apifreellm.com/api/v1/chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer "
-      },
-      body: JSON.stringify({
-        prompt: question,
-        stream: false // ou true si l’API supporte streaming côté navigateur
-      })
-    });
+  while (true) {
 
-    const data = await res.json();
+    const { value, done } = await reader.read();
 
-    // Si streaming = false, on récupère data.response directement
-    aiSpan.textContent = data.response || "Aucune réponse";
+    if (done) break;
 
-  } catch (err) {
-    aiSpan.textContent = "Erreur : " + err.message;
+    const chunk = decoder.decode(value);
+
+    const lines = chunk.split("\n");
+
+    for (const line of lines) {
+
+      if (line.startsWith("data:")) {
+
+        const data = line.replace("data:", "").trim();
+
+        if (data === "[DONE]") return;
+
+        try {
+
+          const json = JSON.parse(data);
+
+          const token = json.choices[0].delta?.content;
+
+          if (token) {
+            aiMsg.textContent += token;
+          }
+
+        } catch {}
+      }
+    }
   }
-
-  button.disabled = false;
-}
-
-button.onclick = sendMessage;
-input.addEventListener("keypress", e => {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    sendMessage();
-  }
-});
+};
