@@ -36,7 +36,6 @@ sendBtn.onclick = async () => {
     if (done) break;
 
     const chunk = decoder.decode(value);
-
     const lines = chunk.split("\n");
 
     for (const line of lines) {
@@ -51,15 +50,18 @@ sendBtn.onclick = async () => {
 
         const json = JSON.parse(data);
 
-        // Cloudflare AI streaming
-        if (json.response) {
-          ai.textContent += json.response;
+        const token =
+          json.response ||
+          json.choices?.[0]?.delta?.content ||
+          json.delta?.content ||
+          "";
+
+        if (token) {
+          ai.textContent += token;
         }
 
-      } catch (e) {}
+      } catch {}
 
     }
-
   }
-
 };
