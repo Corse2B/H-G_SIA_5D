@@ -6,6 +6,8 @@ const input = document.getElementById("question");
 const button = document.getElementById("send");
 const messages = document.getElementById("messages");
 
+let lastQuestion = "";
+
 function scrollBottom() {
   messages.scrollTop = messages.scrollHeight;
 }
@@ -29,21 +31,7 @@ function addMessage(author) {
   return span;
 }
 
-async function sendMessage() {
-
-  const question = input.value.trim();
-  if (!question) return;
-
-  input.value = "";
-  input.focus();
-
-  const user = addMessage("Vous");
-  user.textContent = question;
-
-  const ai = addMessage("Chronograph-IA");
-  ai.textContent = "Réflexion...";
-
-  button.disabled = true;
+async function askAI(question, aiElement, append=false) {
 
   try {
 
@@ -58,18 +46,14 @@ async function sendMessage() {
     const reader = res.body.getReader();
     const decoder = new TextDecoder();
 
-    let text = "";
-
-    ai.textContent = "";
+    let text = append ? aiElement.textContent : "";
 
     while (true) {
 
       const { done, value } = await reader.read();
-
       if (done) break;
 
       const chunk = decoder.decode(value);
-
       const lines = chunk.split("\n");
 
       for (const line of lines) {
@@ -89,9 +73,9 @@ async function sendMessage() {
             text += parsed.response;
 
             if (window.marked) {
-              ai.innerHTML = marked.parse(text);
+              aiElement.innerHTML = marked.parse(text);
             } else {
-              ai.textContent = text;
+              aiElement.textContent = text;
             }
 
             scrollBottom();
@@ -104,9 +88,41 @@ async function sendMessage() {
 
     }
 
+    return text;
+
   } catch (err) {
 
-    ai.textContent = "Erreur : " + err;
+    aiElement.textContent = "Erreur : " + err;
+    return "";
+
+  }
+
+}
+
+async function sendMessage() {
+
+  const question = input.value.trim();
+  if (!question) return;
+
+  input.value = "";
+  input.focus();
+
+  lastQuestion = question;
+
+  const user = addMessage("Vous");
+  user.textContent = question;
+
+  const ai = addMessage("Chronograph-IA");
+  ai.textContent = "Réflexion...";
+
+  button.disabled = true;
+
+  let text = await askAI(question, ai);
+
+  // Vérifie si la réponse est coupée
+  if (!text.trim().match(/[.!?]$/)) {
+
+    text = await askAI("continue", ai, true);
 
   }
 
