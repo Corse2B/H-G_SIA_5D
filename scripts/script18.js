@@ -2,20 +2,20 @@ const input = document.getElementById("question");
 const button = document.getElementById("send");
 const messages = document.getElementById("messages");
 
-function scrollBottom() {
+function scrollBottom(){
   messages.scrollTop = messages.scrollHeight;
 }
 
-function addMessage(author) {
+function addMessage(author){
 
   const p = document.createElement("p");
 
-  const bold = document.createElement("b");
-  bold.textContent = author + " : ";
+  const b = document.createElement("b");
+  b.textContent = author + " : ";
 
   const span = document.createElement("span");
 
-  p.appendChild(bold);
+  p.appendChild(b);
   p.appendChild(span);
 
   messages.appendChild(p);
@@ -25,13 +25,12 @@ function addMessage(author) {
   return span;
 }
 
-async function sendMessage() {
+async function sendMessage(){
 
   const question = input.value.trim();
-  if (!question) return;
+  if(!question) return;
 
   input.value = "";
-  input.focus();
 
   button.disabled = true;
 
@@ -41,54 +40,54 @@ async function sendMessage() {
   const ai = addMessage("Chronograph-IA");
   ai.innerHTML = "Réflexion...";
 
-  const res = await fetch("https://chronographia-ai.tsilvain.workers.dev", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ message: question })
-  });
+  const res = await fetch(
+    "https://chronographia-ai.tsilvain.workers.dev",
+    {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body: JSON.stringify({ message: question })
+    }
+  );
 
   const reader = res.body.getReader();
   const decoder = new TextDecoder();
 
-  let fullText = "";
-
   ai.innerHTML = "";
 
-  while (true) {
+  let text = "";
 
-    const { done, value } = await reader.read();
+  while(true){
 
-    if (done) break;
+    const {done,value} = await reader.read();
+    if(done) break;
 
     const chunk = decoder.decode(value);
 
     const lines = chunk.split("\n");
 
-    for (const line of lines) {
+    for(const line of lines){
 
-      if (!line.startsWith("data:")) continue;
+      if(!line.startsWith("data:")) continue;
 
-      const data = line.replace("data:", "").trim();
+      const json = line.replace("data:","").trim();
 
-      if (data === "[DONE]") break;
+      if(json === "[DONE]") break;
 
-      try {
+      try{
 
-        const parsed = JSON.parse(data);
+        const parsed = JSON.parse(json);
 
-        if (parsed.response) {
+        if(parsed.response){
 
-          fullText += parsed.response;
+          text += parsed.response;
 
-          ai.innerHTML = marked.parse(fullText);
+          ai.innerHTML = marked.parse(text);
 
           scrollBottom();
 
         }
 
-      } catch {}
+      }catch{}
 
     }
 
@@ -100,8 +99,8 @@ async function sendMessage() {
 
 button.onclick = sendMessage;
 
-input.addEventListener("keypress", e => {
-  if (e.key === "Enter") {
+input.addEventListener("keypress", e=>{
+  if(e.key==="Enter"){
     e.preventDefault();
     sendMessage();
   }
