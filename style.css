@@ -1,6 +1,14 @@
 #question{
 position: fixed;
-bottom: 0;
+bottom: 10;
+left: 50%;
+z-index: 1000;
+}
+#send{
+position: fixed;
+bottom: 5;
+left: 50%;
+ z-index: 1000;
 }
 #site-loader-screen {
   position: fixed;
