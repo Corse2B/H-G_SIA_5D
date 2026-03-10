@@ -1,20 +1,17 @@
-#chat{
-position: fixed;
-bottom: 0;
-left: 0;
-width: 100%;
-display: flex;
-gap: 10px;
-padding: 10px;
-background: white;
-}
-
 #question{
-flex: 1;
+position: fixed;
+bottom: 10px;
+left: 50%;
+transform: translateX(-50%);
+z-index: 1000;
 }
 
 #send{
-width: 100px;
+position: fixed;
+bottom: 5px;
+left: 50%;
+transform: translateX(-50%);
+z-index: 1000;
 }
 #site-loader-screen {
   position: fixed;
