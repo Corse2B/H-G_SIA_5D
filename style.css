@@ -21,6 +21,7 @@ transform: translateX(-50%);
 z-index: 1000;
 margin: 25px;
 width: 90%;
+height:60px;
 }
 
 #send{
