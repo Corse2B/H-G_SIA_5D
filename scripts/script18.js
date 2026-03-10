@@ -17,7 +17,7 @@ sendBtn.onclick = async () => {
 
   textarea.value = "";
 
-  const response = await fetch("https://TON-WORKER.workers.dev", {
+  const response = await fetch("https://chronographia.tsilvain.workers.dev", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
