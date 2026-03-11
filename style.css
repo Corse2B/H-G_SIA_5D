@@ -3,19 +3,19 @@ margin-top:10px;
 }
 
 #messages code{
-background:#111;
+background:#2F4E69;
 padding:3px 6px;
 border-radius:4px;
 }
 
 #messages pre{
-background:#111;
+background:#2F4E69;
 padding:10px;
 overflow:auto;
 }
 #question{
 position: fixed;
-bottom: 30px;
+bottom: 10px;
 left: 50%;
 transform: translateX(-50%);
 z-index: 10000;
@@ -26,10 +26,10 @@ height:60px;
 
 #send{
 position: fixed;
-bottom: 5px;
-left: 50%;
+bottom: 30px;
+left: 80%;
 transform: translateX(-50%);
-z-index: 1000;
+z-index: 100000;
 }
 #site-loader-screen {
   position: fixed;
