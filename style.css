@@ -22,20 +22,20 @@ transform: translateX(-50%);
 z-index: 10000;
 margin: 25px;
 width: 90%;
-height:60px;
+height:70px;
 }
-#question:hover{
+#messages:hover{
 background-color:#2A3F55;
 }
 #send{
 position: fixed;
-  width: 35px;         
-height: 35px;
+  width: 40px;         
+height: 40px;
 bottom: 32px;
 left: 95%;
 transform: translateX(-50%);
 z-index: 100000;
-font-size: 30px;
+font-size: 25px;
 border-radius: 50%;
 }
 #site-loader-screen {
