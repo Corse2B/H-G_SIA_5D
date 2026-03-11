@@ -26,10 +26,11 @@ height:60px;
 
 #send{
 position: fixed;
-bottom: 30px;
-left: 80%;
+bottom: 32px;
+left: 95%;
 transform: translateX(-50%);
 z-index: 100000;
+width:10px;
 }
 #site-loader-screen {
   position: fixed;
