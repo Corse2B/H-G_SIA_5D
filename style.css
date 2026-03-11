@@ -5,13 +5,14 @@ margin-top:10px;
 #messages code{
 background:#2F4E69;
 padding:3px 6px;
-border-radius:4px;
+border-radius:10px;
 }
 
 #messages pre{
 background:#2F4E69;
-padding:10px;
+padding: 10px;
 overflow:auto;
+border-radius:10px;
 }
 #question{
 position: fixed;
@@ -23,9 +24,13 @@ margin: 25px;
 width: 90%;
 height:60px;
 }
-
+#question:hover{
+background-color:#2A3F55;
+}
 #send{
 position: fixed;
+  width: 60px;          /* ou toute autre valeur */
+height: 60px;
 bottom: 32px;
 left: 95%;
 transform: translateX(-50%);
