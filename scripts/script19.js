@@ -1,5 +1,5 @@
 function lireTexte() {
-  const texte = document.getElementById("texte").innerText;
+  const texte = document.getElementById("content1").innerText;
   const speech = new SpeechSynthesisUtterance(texte);
   speech.lang = "fr-FR";
   speech.rate = 1;
