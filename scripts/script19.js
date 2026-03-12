@@ -1,9 +1,27 @@
-function lireTexte() {
-  const texte = document.getElementById("content1").innerText;
-  const speech = new SpeechSynthesisUtterance(texte);
-  speech.lang = "fr-FR";
-  speech.rate = 1;
-  speech.pitch = 1;
+let speaking = false;
+let utterance;
 
-  speechSynthesis.speak(speech);
-}
+const btn = document.getElementById("lireTexte");
+
+btn.addEventListener("click", () => {
+
+  if (speaking) {
+    speechSynthesis.cancel();
+    speaking = false;
+    btn.textContent = "🔊 Lire";
+    return;
+  }
+
+  const text = document.getElementById("content1").innerText;
+  utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = "fr-FR";
+
+  utterance.onend = () => {
+    speaking = false;
+    btn.textContent = "🔊 Lire";
+  };
+
+  speechSynthesis.speak(utterance);
+  speaking = true;
+  btn.textContent = "⏹ Stop";
+});
