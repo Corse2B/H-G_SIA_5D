@@ -29,8 +29,8 @@ btn.addEventListener("click", () => {
   utterance.lang = "fr-FR";
   utterance.voice = voices.find(v => v.lang === "fr-FR");
 
-  utterance.rate = 0.9;
-  utterance.pitch = 1;
+  utterance.rate = 0.75;
+  utterance.pitch = 0.5;
   utterance.volume = 1;
 
   utterance.onend = () => {
