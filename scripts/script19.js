@@ -1,6 +1,6 @@
 let speaking = false;
 let utterance;
-let voices = [1];
+let voices = [8];
 
 function loadVoices() {
   voices = speechSynthesis.getVoices();
