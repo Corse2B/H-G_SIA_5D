@@ -1,45 +1,38 @@
 let speaking = false;
-let utterance;
-let voices = [8];
 
-function loadVoices() {
-  voices = speechSynthesis.getVoices();
-}
+document.querySelectorAll(".lireTexte").forEach(btn => {
 
-speechSynthesis.onvoiceschanged = loadVoices;
+  btn.addEventListener("click", () => {
 
-const btn = document.getElementById("lireTexte");
+    if (speaking) {
+      speechSynthesis.cancel();
+      speaking = false;
+      btn.textContent = "🔊";
+      return;
+    }
 
-btn.addEventListener("click", () => {
+    const parent = btn.closest(".content");
 
-  if (speaking) {
-    speechSynthesis.cancel();
-    speaking = false;
-    btn.textContent = "🔊";
-    return;
-  }
+    let texte = parent.innerText
+      .replace("🔊","")
+      .replace("✖","");
 
-  const text = document
-    .getElementById("content1")
-    .innerText
-    .replace(/\n+/g," ");
+    const utterance = new SpeechSynthesisUtterance(texte);
 
-  utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "fr-FR";
+    utterance.rate = 0.95;
+    utterance.pitch = 1.1;
 
-  utterance.lang = "fr-FR";
-  utterance.voice = voices.find(v => v.lang === "fr-FR");
+    speechSynthesis.speak(utterance);
 
-  utterance.rate = 0.85;
-  utterance.pitch = 1;
-  utterance.volume = 1;
+    speaking = true;
+    btn.textContent = "⏹";
 
-  utterance.onend = () => {
-    speaking = false;
-    btn.textContent = "🔊";
-  };
+    utterance.onend = () => {
+      speaking = false;
+      btn.textContent = "🔊";
+    };
 
-  speechSynthesis.speak(utterance);
+  });
 
-  speaking = true;
-  btn.textContent = "⏹";
 });
