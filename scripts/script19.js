@@ -1,37 +1,28 @@
-let speaking = false;
-
 document.querySelectorAll(".lireTexte").forEach(btn => {
 
-  btn.addEventListener("click", () => {
-
-    if (speaking) {
-      speechSynthesis.cancel();
-      speaking = false;
-      btn.textContent = "🔊";
-      return;
-    }
+  btn.addEventListener("click", async () => {
 
     const parent = btn.closest(".content");
-
-    let texte = parent.innerText
+    const text = parent.innerText
       .replace("🔊","")
       .replace("✖","");
 
-    const utterance = new SpeechSynthesisUtterance(texte);
+    btn.textContent = "⏳";
 
-    utterance.lang = "fr-FR";
-    utterance.rate = 0.95;
-    utterance.pitch = 1.1;
+    const res = await fetch("https://TON-WORKER.workers.dev", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ text })
+    });
 
-    speechSynthesis.speak(utterance);
+    const blob = await res.blob();
 
-    speaking = true;
-    btn.textContent = "⏹";
+    const audio = new Audio(URL.createObjectURL(blob));
+    audio.play();
 
-    utterance.onend = () => {
-      speaking = false;
-      btn.textContent = "🔊";
-    };
+    btn.textContent = "🔊";
 
   });
 
