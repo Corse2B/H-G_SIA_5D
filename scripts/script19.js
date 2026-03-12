@@ -9,7 +9,7 @@ document.querySelectorAll(".lireTexte").forEach(btn => {
 
     btn.textContent = "⏳";
 
-    const res = await fetch("https://TON-WORKER.workers.dev", {
+    const res = await fetch("https://lecture.tsilvain.workers.dev", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
