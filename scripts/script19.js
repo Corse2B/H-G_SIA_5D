@@ -12,14 +12,29 @@ const s = Math.floor(sec % 60);
 return m + ":" + (s < 10 ? "0"+s : s);
 }
 
+function stopAllAudio(){
+document.querySelectorAll(".audio-player audio").forEach(a=>{
+if(a !== audio){
+a.pause();
+a.currentTime = a.currentTime;
+a.parentElement.querySelector(".play-btn").textContent="▶️";
+}
+});
+}
+
 playBtn.addEventListener("click", () => {
 
 if(audio.paused){
+
+stopAllAudio();   // 🔴 stop les autres
 audio.play();
 playBtn.textContent="⏸";
+
 }else{
+
 audio.pause();
 playBtn.textContent="▶️";
+
 }
 
 });
