@@ -24,7 +24,7 @@ async function verifier() {
   const password = document.getElementById("mdp").value;
 
   if (!password) {
-    alert("Enter une phrase");
+    alert("Entrez une phrase");
     return;
   }
 
